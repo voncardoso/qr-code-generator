@@ -3,10 +3,12 @@ import { useContext } from "react";
 import { UserContext } from "../../Context/useContext";
 import { Container } from "./style";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -19,6 +21,7 @@ export function Login() {
         const user = userCredential.user;
         if (user) {
           console.log("usuario existe");
+          navigate("/Dashboard");
         }
         // ...
       })

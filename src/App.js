@@ -3,9 +3,11 @@ import { UserStorage } from "./Context/useContext";
 import { Login } from "./Pages/Login";
 import "firebase/compat/storage";
 import "firebase/compat/auth";
+import { firebase, firebaseConfig } from "./Config/config";
 import { Dashboard } from "./Pages/Dashboard";
 
 function App() {
+  firebase.initializeApp(firebaseConfig);
   return (
     <div>
       {" "}
