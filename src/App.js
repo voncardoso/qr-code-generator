@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { UserStorage } from "./Context/useContext";
 import { Login } from "./Pages/Login";
-import { firebase, firebaseConfig } from "./Config/config";
 import "firebase/compat/storage";
 import "firebase/compat/auth";
+import { Dashboard } from "./Pages/Dashboard";
 
 function App() {
   return (
@@ -14,6 +13,7 @@ function App() {
         <UserStorage>
           <Routes>
             <Route end path="/" element={<Login />} />
+            <Route end path="/dashboard" element={<Dashboard />} />
           </Routes>
         </UserStorage>
       </BrowserRouter>
