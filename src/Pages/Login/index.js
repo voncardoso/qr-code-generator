@@ -41,22 +41,31 @@ export function Login() {
   console.log("password", password);
   return (
     <Container>
+
+      
       <form onSubmit={handleSubmit}>
-        <label htmlFor="">Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <label htmlFor="">Senha</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
+        <h1>Login</h1>
+        <div>
+          <label htmlFor="">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="">Senha</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </div>
         <button>Login</button>
+        
       </form>
-      <div>
+      <div className="containerImg">
         <img src={backgroungLogin} alt="" />
       </div>
       

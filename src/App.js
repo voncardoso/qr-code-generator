@@ -14,6 +14,7 @@ function App() {
     <div>
       {" "}
       <BrowserRouter>
+      <GlobalStyle/>
         <UserStorage>
           <Routes>
             <Route end path="/" element={<Login />} />
