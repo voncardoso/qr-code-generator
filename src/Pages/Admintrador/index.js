@@ -27,7 +27,7 @@ export function Admistrador() {
               <div>
                 <span>Valor Total</span>
               </div>
-              <strong>R$ 16.114,00</strong>
+              <strong>R$ 16</strong>
             </li>
           </ul>
         </header>
@@ -38,7 +38,7 @@ export function Admistrador() {
               <th className="primeryTD">Nº </th>
               <th>Valor</th>
               <th>Tipo</th>
-              <th>Ações</th>
+              <th className="acoes">Ações</th>
             </tr>
           </thead>
 
@@ -47,9 +47,13 @@ export function Admistrador() {
               <td>233</td>
               <td>20.00 R$</td>
               <td>Area Vip</td>
-              <td >
-              <NotePencil className="notePencil" size={25} color={"var(--green-300)"} />
-              <Trash size={25} color={"var(--red-300)"} />
+              <td>
+                <NotePencil
+                  className="notePencil"
+                  size={25}
+                  color={"var(--green-300)"}
+                />
+                <Trash size={25} color={"var(--red-300)"} />
               </td>
             </tr>
           </tbody>
