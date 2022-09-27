@@ -44,11 +44,13 @@ export const Container = styled.section`
       button {
         background: var(--blue-300);
         border-radius: 10px;
-       padding: 10px 0;
-       color: white;
-       font-size: 20px;
-      }
+        border: transparent;
+        padding: 10px 0;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
 
+      }
 
   }
 
