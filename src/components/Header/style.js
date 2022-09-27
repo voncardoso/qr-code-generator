@@ -13,11 +13,18 @@ export const Container = styled.header`
 
     div {
       display: flex;
+      align-items: center;
+      padding: 5px 0px;
       a {
         color: var(--white);
         margin-left: 60px;
         font-size: 1rem;
         text-decoration: none;
+        svg {
+          position: relative;
+          top: 2px;
+          height: 100%;
+        }
       }
 
       a.isActive::after {
@@ -36,6 +43,19 @@ export const Container = styled.header`
         width: 100%;
         height: 2px;
         background: var(--white);
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        border: none;
+        margin-left: 60px;
+        font-size: 1rem;
+        background: none;
+        color: var(--white);
+        p {
+          margin-right: 5px;
+        }
       }
     }
   }
