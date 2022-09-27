@@ -2,19 +2,30 @@ import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
       :root{
-        --background: #F4F3F1;
+        --background: #E6EDF2;
         --white: #FFFFFF;
         
         --text: #39332E;
 
-        --gold-100: #FDF2E4;
-        --gold-200: #FBEAD7;
-        --gold-300: #F6B766;
-        --gold-400: #E2942F;
+        --blue-100: #249AFF;
+        --blue-200: #1188EE;
+        --blue-300: #0470CC;
+        --blue-400: #003DA7;
 
-        --gray-400: #A8A8A8;
-        --gray-500: #68635F;
+        --gray-100: #E6EDF2;
+        --gray-200: #C3CFD9;
+        --gray-300: #9BAEBF;
+
         --gray-input: #E5E5E3
+
+        --black-100: #63717D;
+        --black-200: #45525E;
+        --black-300: #151F29;
+
+        --red-100: #FF4926;
+        --red-200: #EE3411;
+        --red-300: #D92604;
+        
     }
 
   * {
@@ -39,6 +50,10 @@ export const GlobalStyle = createGlobalStyle`
 
     button {
         cursor: pointer;
+    }
+
+    img { 
+        width: 100%;
     }
 
 
