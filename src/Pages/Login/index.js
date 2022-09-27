@@ -4,6 +4,7 @@ import { UserContext } from "../../Context/useContext";
 import { Container } from "./style";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import backgroungLogin from "../../assets/imagem-festa-tela-login.png"
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -51,8 +52,10 @@ export function Login() {
         />
         <button>Login</button>
       </form>
-
-      <img src="" alt="" />
+      <div>
+        <img src={backgroungLogin} alt="" />
+      </div>
+      
     </Container>
   );
 }
