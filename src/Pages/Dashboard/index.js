@@ -38,7 +38,7 @@ export function Dashboard() {
               <th className="primeryTD">Nº </th>
               <th>Valor</th>
               <th>Tipo</th>
-              <th>Ações</th>
+              <th className="acoes">Ações</th>
             </tr>
           </thead>
 
@@ -53,6 +53,23 @@ export function Dashboard() {
             </tr>
           </tbody>
         </table>
+
+        <div>
+          <ul>
+            <li>
+              Nº: <p>234</p>
+            </li>
+            <li className="area">
+              Área: <p>Vip</p>
+            </li>
+            <li className="valor">
+              Valor: <p>20.00R$</p>
+            </li>
+            <li>
+              <button>Confirmar</button>
+            </li>
+          </ul>
+        </div>
       </Container>
     </>
   );
