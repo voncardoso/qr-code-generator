@@ -3,10 +3,11 @@ import styled from "styled-components";
 export const Container = styled.header`
   height: 220px;
   background: var(--blue-400);
-
+  width: 100%;
+  padding: 0px 80px;
   nav {
     display: flex;
-    width: 90vw;
+
     margin: 0 auto;
     padding: 20px 30px;
     justify-content: space-between;
@@ -55,6 +56,26 @@ export const Container = styled.header`
         color: var(--white);
         p {
           margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 823px) {
+    padding: 0px 40px;
+    height: 170px;
+    nav {
+      padding: 20px 10px;
+
+      div {
+        a {
+          margin-left: 30px;
+          font-size: 0.875rem;
+        }
+
+        button {
+          margin-left: 30px;
+          font-size: 0.875rem;
         }
       }
     }

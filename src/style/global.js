@@ -59,5 +59,8 @@ export const GlobalStyle = createGlobalStyle`
     }
 
 
+    .div-global{
+        width: 100%;
+    }
 
 `;

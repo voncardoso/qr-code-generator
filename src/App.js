@@ -12,7 +12,7 @@ import { Admistrador } from "./Pages/Admintrador";
 function App() {
   firebase.initializeApp(firebaseConfig);
   return (
-    <div>
+    <div className="div-global">
       {" "}
       <BrowserRouter>
         <GlobalStyle />
