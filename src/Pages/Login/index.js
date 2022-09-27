@@ -9,6 +9,8 @@ import backgroungLogin from "../../assets/imagem-festa-tela-login.png"
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [login, setLogin] = useState(null);
+
   const navigate = useNavigate();
 
   function handleSubmit(event) {
@@ -22,6 +24,8 @@ export function Login() {
         const user = userCredential.user;
         if (user) {
           console.log("usuario existe");
+          setLogin(true);
+          window.localStorage.setItem("login", true);
           navigate("/Dashboard");
         }
         // ...
