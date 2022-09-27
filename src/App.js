@@ -5,6 +5,7 @@ import "firebase/compat/storage";
 import "firebase/compat/auth";
 import { firebase, firebaseConfig } from "./Config/config";
 import { Dashboard } from "./Pages/Dashboard";
+import { ProtectedRouter } from "./components/ProtectedRouter";
 
 function App() {
   firebase.initializeApp(firebaseConfig);
@@ -15,7 +16,14 @@ function App() {
         <UserStorage>
           <Routes>
             <Route end path="/" element={<Login />} />
-            <Route end path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRouter>
+                  <Dashboard />
+                </ProtectedRouter>
+              }
+            />
           </Routes>
         </UserStorage>
       </BrowserRouter>
