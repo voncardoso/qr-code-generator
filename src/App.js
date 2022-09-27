@@ -6,6 +6,7 @@ import "firebase/compat/auth";
 import { firebase, firebaseConfig } from "./Config/config";
 import { Dashboard } from "./Pages/Dashboard";
 import { ProtectedRouter } from "./components/ProtectedRouter";
+import { GlobalStyle } from "./style/global";
 
 function App() {
   firebase.initializeApp(firebaseConfig);
@@ -13,6 +14,7 @@ function App() {
     <div>
       {" "}
       <BrowserRouter>
+        <GlobalStyle />
         <UserStorage>
           <Routes>
             <Route end path="/" element={<Login />} />
