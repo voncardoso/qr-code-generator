@@ -31,6 +31,24 @@ export function Dashboard() {
             </li>
           </ul>
         </header>
+
+        <table>
+          <thead>
+            <th>Nº ingresso</th>
+            <th>Valor</th>
+            <th>Tipo</th>
+            <th>Ações</th>
+          </thead>
+
+          <tbody>
+            <td>233</td>
+            <td>20.00 R$</td>
+            <td>Area Vip</td>
+            <td>
+              <button>Confirmar</button>
+            </td>
+          </tbody>
+        </table>
       </Container>
     </>
   );

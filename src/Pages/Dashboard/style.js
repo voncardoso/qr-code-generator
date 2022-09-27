@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
 export const Container = styled.section`
+  width: 90vw;
+  margin: 0 auto;
+  padding: 0px 30px;
   header {
-    width: 90vw;
-    margin: 0 auto;
-    padding: 0px 30px;
     ul {
+      overflow-x: auto;
       position: relative;
       top: -70px;
       display: flex;
@@ -33,5 +34,11 @@ export const Container = styled.section`
         }
       }
     }
+  }
+
+  table {
+    margin: 0 auto;
+    width: 100%;
+    text-align: left;
   }
 `;
