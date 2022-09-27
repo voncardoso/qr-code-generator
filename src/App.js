@@ -7,6 +7,7 @@ import { firebase, firebaseConfig } from "./Config/config";
 import { Dashboard } from "./Pages/Dashboard";
 import { ProtectedRouter } from "./components/ProtectedRouter";
 import { GlobalStyle } from "./style/global";
+import { Admistrador } from "./Pages/Admintrador";
 
 function App() {
   firebase.initializeApp(firebaseConfig);
@@ -14,7 +15,7 @@ function App() {
     <div>
       {" "}
       <BrowserRouter>
-      <GlobalStyle/>
+        <GlobalStyle />
         <UserStorage>
           <Routes>
             <Route end path="/" element={<Login />} />
@@ -23,6 +24,14 @@ function App() {
               element={
                 <ProtectedRouter>
                   <Dashboard />
+                </ProtectedRouter>
+              }
+            />
+            <Route
+              path="/administrador"
+              element={
+                <ProtectedRouter>
+                  <Admistrador />
                 </ProtectedRouter>
               }
             />
