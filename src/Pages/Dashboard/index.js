@@ -34,19 +34,23 @@ export function Dashboard() {
 
         <table>
           <thead>
-            <th>Nº ingresso</th>
-            <th>Valor</th>
-            <th>Tipo</th>
-            <th>Ações</th>
+            <tr>
+              <th className="primeryTD">Nº </th>
+              <th>Valor</th>
+              <th>Tipo</th>
+              <th>Ações</th>
+            </tr>
           </thead>
 
           <tbody>
-            <td>233</td>
-            <td>20.00 R$</td>
-            <td>Area Vip</td>
-            <td>
-              <button>Confirmar</button>
-            </td>
+            <tr>
+              <td>233</td>
+              <td>20.00 R$</td>
+              <td>Area Vip</td>
+              <td>
+                <button>Confirmar</button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </Container>
