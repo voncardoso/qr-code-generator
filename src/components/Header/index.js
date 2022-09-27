@@ -7,8 +7,8 @@ export function Header() {
       <nav>
         <h1></h1>
         <div>
-          <Link to="#">Dashboard</Link>
-          <Link to="#">Administrador</Link>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/administrador">Administrador</Link>
         </div>
       </nav>
     </Container>
