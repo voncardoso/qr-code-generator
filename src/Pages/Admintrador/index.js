@@ -33,6 +33,7 @@ export function Admistrador() {
         count1 = +item.count + 1;
       }
     });
+
     console.log("count", count1);
     try {
       const docRef = await addDoc(collection(db, "tickets"), {
@@ -92,6 +93,8 @@ export function Admistrador() {
         <button className="buttonAdd" onClick={handleOpenModal}>
           Adicionar
         </button>
+
+        <a href="/qrcode">teste</a>
         <a
           onClick={() => {
             DonwloadQRcode(count);
@@ -161,7 +164,7 @@ export function Admistrador() {
               <option value="Camarote">Camarote</option>
             </select>
           </label>
-          <QRCode value={count} />
+          <QRCode value={"123"} />
           <button>Cadastrar</button>
         </form>
       </Modal>
