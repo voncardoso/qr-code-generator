@@ -8,11 +8,13 @@ import { Dashboard } from "./Pages/Dashboard";
 import { ProtectedRouter } from "./components/ProtectedRouter";
 import { GlobalStyle } from "./style/global";
 import { Admistrador } from "./Pages/Admintrador";
+import { getFirestore } from "firebase/firestore";
 
 function App() {
   firebase.initializeApp(firebaseConfig);
+  getFirestore(firebase.initializeApp(firebaseConfig));
   return (
-    <div>
+    <div className="div-global">
       {" "}
       <BrowserRouter>
         <GlobalStyle />
