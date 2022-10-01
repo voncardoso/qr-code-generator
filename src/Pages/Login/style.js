@@ -39,6 +39,11 @@ export const Container = styled.section`
 
       }
 
+      input:focus {
+        outline-color: var(--blue-100);
+        background-color: var(--white);
+      }
+
     }
 
       button {

@@ -1,7 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Container } from "./style";
 import { getAuth, signOut } from "firebase/auth";
-import { SignOut } from "phosphor-react";
+import { SignOut, List } from "phosphor-react";
+import styled from "styled-components";
+import { getElementError } from "@testing-library/react";
 
 export function Header() {
   const navigate = useNavigate();
@@ -16,6 +18,8 @@ export function Header() {
         // An error happened.
       });
   }
+
+
   return (
     <Container>
       <nav>
@@ -28,6 +32,9 @@ export function Header() {
             <SignOut size={20} />
           </button>
         </div>
+        <a href="#" className="menu-mobile">
+            <List size={32} />
+        </a>
       </nav>
     </Container>
   );
