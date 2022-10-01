@@ -37,13 +37,24 @@ export const Container = styled.section`
     }
   }
 
+  .buttonAdd {
+    position: relative;
+    left: 88%;
+    margin-bottom: 20px;
+    padding: 8px 20px;
+    border-radius: 5px;
+    background-color: var(--blue-400);
+    border: none;
+    color: var(--white);
+  }
+
   table {
     margin: 0 auto;
     width: 100%;
     text-align: left;
     border-collapse: collapse;
     border-radius: 10px;
-
+    overflow: auto;
     thead,
     th {
       color: var(--text);
@@ -63,31 +74,36 @@ export const Container = styled.section`
 
     tbody {
       border-radius: 10px;
-      td {
-        padding: 10px 10px;
-        font-size: 1.125rem;
-        background: var(--white);
-        max-width: 200px;
-        width: 25%;
-        padding: 10px 20px;
-        button {
-          background: var(--blue-400);
-          padding: 10px 20px;
-          color: var(--white);
-          font-weight: 600;
-          border: none;
-          border-radius: 5px;
-        }
-      }
-      td:last-child {
-        border-bottom-right-radius: 10px;
-        border-top-right-radius: 10px;
-        text-align: center;
-      }
+      tr {
+        margin-bottom: 40px;
 
-      td:first-child {
-        border-bottom-left-radius: 10px;
-        border-top-left-radius: 10px;
+        td {
+          padding: 10px 10px;
+          font-size: 1.125rem;
+          background: var(--white);
+          max-width: 200px;
+          width: 25%;
+          padding: 10px 20px;
+          border-bottom: 5px solid var(--background);
+          button {
+            background: var(--blue-400);
+            padding: 10px 20px;
+            color: var(--white);
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+          }
+        }
+        td:last-child {
+          border-bottom-right-radius: 10px;
+          border-top-right-radius: 10px;
+          text-align: center;
+        }
+
+        td:first-child {
+          border-bottom-left-radius: 10px;
+          border-top-left-radius: 10px;
+        }
       }
     }
   }

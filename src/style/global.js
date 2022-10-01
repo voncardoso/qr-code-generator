@@ -63,4 +63,80 @@ export const GlobalStyle = createGlobalStyle`
         width: 100%;
     }
 
+    .react-modal-overlay {
+      animation: animeLeft 30s forwards;
+    position: fixed ;
+    background: rgba(0,0,0, 0.25);
+    position: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .react-modal-content{
+    width: 100%;
+    max-width: 400px;
+    background: var(--white);
+    padding: 3rem;
+    border-radius: 1rem;
+    color: var(--text);
+   
+    h3{
+        padding-bottom: 20px;
+        
+    }
+        input {
+          margin-top: 5px;
+          width: 100%;
+          padding: 10px 10px;
+          border-radius: 5px;
+          background: #ddd;
+          border: none;
+          margin-bottom: 20px;
+        }
+        input:focus,
+        select:focus {
+          outline: transparent;
+          box-shadow: 0 0 0 2px var(--gold-300);
+        }
+        select {
+          margin-top: 5px;
+          margin-bottom: 20px;
+          width: 100%;
+          padding: 10px 10px;
+          border-radius: 5px;
+          background: #ddd;
+          border: none;
+          font-size: 0.875rem;
+          line-height: 20px;
+          cursor: pointer;
+        }
+    
+    button {
+      width: 100%;
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: var(--white);
+      padding: 10px 30px;
+      border: none;
+      border-radius: 5px;
+      background: var(--blue-400);
+      margin-top: 10px;
+    }
+
+    .closeButtonModal:hover{
+        background: none;
+    }
+
+    button:hover {
+      background: var(--gold-300);
+    }
+}
+
 `;
