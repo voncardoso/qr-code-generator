@@ -26,8 +26,8 @@ export const Container = styled.header`
           top: 2px;
           height: 100%;
         }
+ 
       }
-
       a.isActive::after {
         content: "";
         display: block;
@@ -59,6 +59,10 @@ export const Container = styled.header`
         }
       }
     }
+
+    .menu-mobile {
+          display: none;
+        }
   }
 
   @media (max-width: 823px) {
@@ -68,15 +72,27 @@ export const Container = styled.header`
       padding: 20px 10px;
 
       div {
+        flex-direction: column;
+        align-items: center;
         a {
           margin-left: 30px;
           font-size: 0.875rem;
+          display: none;
         }
 
         button {
           margin-left: 30px;
           font-size: 0.875rem;
+          display: none;
         }
+
+        a:hover::after {
+        content: none;
+        }
+      }
+
+      .menu-mobile {
+          display: block;
       }
     }
   }
