@@ -1,14 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../Config/config";
 import { QrReader } from "react-qr-reader";
-import { Header } from "../../components/Header";
 import { UserContext } from "../../Context/useContext";
 import { Container } from "./style";
 
@@ -33,7 +26,7 @@ export function QRcode1() {
     });
   }, [dataQrcode]);
 
-  async function verifyQrCode(item, id) {
+  async function verifyQrCode(id) {
     console.log("foi-------------------");
     const washingtonRef = doc(db, "tickets", id);
     try {

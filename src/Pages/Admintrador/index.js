@@ -16,6 +16,7 @@ export function Admistrador() {
   const [isActiveModal, setIsActiveModal] = useState(false);
   const { data } = useContext(UserContext);
   const [count, setCount] = useState("");
+  let count1 = 0;
 
   function handleOpenModal() {
     setIsActiveModal(true);
@@ -27,12 +28,8 @@ export function Admistrador() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    let count1 = 0;
-    data.map((item) => {
-      if (count1 < +item.count) {
-        count1 = +item.count + 1;
-      }
-    });
+
+    count1 = data.length + 1;
 
     try {
       const docRef = await addDoc(collection(db, "tickets"), {
@@ -60,6 +57,8 @@ export function Admistrador() {
       }
     );
   }
+
+  console.log(data);
 
   return (
     <>
@@ -94,7 +93,6 @@ export function Admistrador() {
           Adicionar
         </button>
 
-        <a href="/qrcode">teste</a>
         <a
           onClick={() => {
             DonwloadQRcode(count);

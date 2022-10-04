@@ -55,6 +55,7 @@ export const Container = styled.section`
     border-collapse: collapse;
     border-radius: 10px;
     overflow: auto;
+    margin-bottom: 10px;
     thead,
     th {
       color: var(--text);
