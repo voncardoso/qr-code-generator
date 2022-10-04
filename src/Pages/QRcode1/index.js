@@ -1,26 +1,70 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../../Config/config";
 import { QrReader } from "react-qr-reader";
+import { Header } from "../../components/Header";
+import { UserContext } from "../../Context/useContext";
+import { Container } from "./style";
 
 export function QRcode1() {
-  const [data, setData] = useState("No result");
+  const { data } = useContext(UserContext);
+  const [dataQrcode, setDataQrcode] = useState("No result");
+  const [isActiveQrCode, setIsActiveQrCode] = useState("block");
+  const [confirmQrCode, setConfirmQrCode] = useState("none");
+
+  useEffect(() => {
+    if (dataQrcode === "No result") {
+      setIsActiveQrCode("block");
+      setConfirmQrCode("none");
+    }
+
+    data.map((item) => {
+      if (item.count == dataQrcode && item.active === false) {
+        verifyQrCode(item.active, item.id);
+      } else {
+        console.log("igresso ja foi confirmado");
+      }
+    });
+  }, [dataQrcode]);
+
+  async function verifyQrCode(item, id) {
+    console.log("foi-------------------");
+    const washingtonRef = doc(db, "tickets", id);
+    try {
+      await updateDoc(washingtonRef, {
+        active: true,
+      });
+      setIsActiveQrCode("none");
+      setConfirmQrCode("block");
+    } catch {
+      console.log("erro");
+    }
+  }
 
   return (
-    <div>
-      <h1>teste</h1>
-      <QrReader
-        onResult={(result, error) => {
-          if (!!result) {
-            setData(result?.text);
-            console.log("dados", data);
-          }
+    <Container>
+      <div style={{ display: isActiveQrCode }}>
+        <QrReader
+          onResult={(result, error) => {
+            if (!!result) {
+              setDataQrcode(result?.text);
+            }
 
-          if (!!error) {
-            console.info(error);
-          }
-        }}
-        style={{ width: "100%" }}
-      />
-      <p>{data}</p>
-    </div>
+            if (!!error) {
+            }
+          }}
+          style={{ width: "100%" }}
+        />
+        <p>{dataQrcode}</p>
+      </div>
+
+      <div style={{ display: confirmQrCode }}>Ingresso Confirmado</div>
+    </Container>
   );
 }

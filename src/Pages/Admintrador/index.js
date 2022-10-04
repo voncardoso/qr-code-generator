@@ -34,7 +34,6 @@ export function Admistrador() {
       }
     });
 
-    console.log("count", count1);
     try {
       const docRef = await addDoc(collection(db, "tickets"), {
         money: money,
@@ -164,7 +163,7 @@ export function Admistrador() {
               <option value="Camarote">Camarote</option>
             </select>
           </label>
-          <QRCode value={"123"} />
+          <QRCode value={"1"} />
           <button>Cadastrar</button>
         </form>
       </Modal>
