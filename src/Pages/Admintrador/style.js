@@ -31,7 +31,7 @@ export const Container = styled.section`
         }
 
         strong {
-          font-size: 3rem;
+          font-size: 2rem;
         }
       }
     }
