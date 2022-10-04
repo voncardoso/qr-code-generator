@@ -39,6 +39,7 @@ export function Admistrador() {
         money: money,
         type: type,
         count: count1.toLocaleString(),
+        active: false,
       });
 
       console.log("Document written with ID: ", docRef.id);
