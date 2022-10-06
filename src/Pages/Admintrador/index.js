@@ -162,7 +162,7 @@ export function Admistrador() {
               <option value="Camarote">Camarote</option>
             </select>
           </label>
-          <QRCode value={"1"} />
+          <QRCode value={"5"} />
           <button>Cadastrar</button>
         </form>
       </Modal>

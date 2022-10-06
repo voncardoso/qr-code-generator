@@ -19,7 +19,7 @@ export function QRcode1() {
 
     data.map((item) => {
       if (item.count == dataQrcode && item.active === false) {
-        verifyQrCode(item.active, item.id);
+        verifyQrCode(item.id);
       } else {
         console.log("igresso ja foi confirmado");
       }
@@ -39,6 +39,8 @@ export function QRcode1() {
       console.log("erro");
     }
   }
+  console.log(isActiveQrCode);
+  //  constraints={{ facingMode: "environment" }}
 
   return (
     <Container>
