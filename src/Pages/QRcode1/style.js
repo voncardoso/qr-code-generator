@@ -10,7 +10,6 @@ export const Container = styled.section`
   align-items: center;
   background: rgba(0, 0, 0, 0.25);
   div {
-    height: 100vh;
     width: 100vw;
     padding: 0px;
 
@@ -20,6 +19,7 @@ export const Container = styled.section`
   }
 
   .confirm {
+    width: 300px;
     background: #fff;
     padding: 20px;
     border-radius: 5px;
