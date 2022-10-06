@@ -178,9 +178,6 @@ export const Container = styled.section`
 
   @media (max-width: 823px) {
     padding: 0px 40px;
-  }
-
-  @media (max-width: 823px) {
     header {
       ul {
         li {
@@ -211,7 +208,7 @@ export const Container = styled.section`
     }
   }
 
-  @media (max-width: 490px) {
+  @media (max-width: 517px) {
     div {
       display: block;
     }

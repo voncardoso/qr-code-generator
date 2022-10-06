@@ -130,13 +130,15 @@ export const GlobalStyle = createGlobalStyle`
       margin-top: 10px;
     }
 
+  button:hover {
+    background-color: rgba(19, 94, 159, 90%);
+  }
+
     .closeButtonModal:hover{
         background: none;
     }
 
-    button:hover {
-      background: var(--gold-300);
-    }
+
 }
 
 `;
