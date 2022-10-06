@@ -4,6 +4,7 @@ import { db } from "../../Config/config";
 import { QrReader } from "react-qr-reader";
 import { UserContext } from "../../Context/useContext";
 import { Container } from "./style";
+import { CheckCircle } from "phosphor-react";
 
 export function QRcode1() {
   const { data } = useContext(UserContext);
@@ -43,6 +44,7 @@ export function QRcode1() {
       console.log("erro");
     }
   }
+
   console.log(isActiveQrCode);
   //  constraints={{ facingMode: "environment" }}
 
@@ -61,10 +63,20 @@ export function QRcode1() {
           }}
           style={{ width: "100%" }}
         />
-        <p>{dataQrcode}</p>
       </div>
 
-      <div style={{ display: confirmQrCode }}>Ingresso Confirmado</div>
+      <div className="confirm" style={{ display: confirmQrCode }}>
+        <CheckCircle size={80} />
+        <h3>Nº {dataQrcode}</h3>
+        <h3>Confirmado</h3>
+        <button
+          onClick={() => {
+            window.location.reload();
+          }}
+        >
+          Continuar
+        </button>
+      </div>
     </Container>
   );
 }
