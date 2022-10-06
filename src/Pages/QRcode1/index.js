@@ -44,7 +44,7 @@ export function QRcode1() {
     <Container>
       <div style={{ display: isActiveQrCode }}>
         <QrReader
-          constraints={{ facingMode: "none" }}
+          constraints={{ facingMode: "environment" }}
           onResult={(result, error) => {
             if (!!result) {
               setDataQrcode(result?.text);
