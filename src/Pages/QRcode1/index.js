@@ -12,18 +12,22 @@ export function QRcode1() {
   const [confirmQrCode, setConfirmQrCode] = useState("none");
 
   useEffect(() => {
-    if (dataQrcode === "No result") {
-      setIsActiveQrCode("block");
-      setConfirmQrCode("none");
+    function teste() {
+      if (dataQrcode === "No result") {
+        setIsActiveQrCode("block");
+        setConfirmQrCode("none");
+      }
+
+      data.map((item) => {
+        if (item.count == dataQrcode && item.active === false) {
+          verifyQrCode(item.id);
+        } else {
+          console.log("igresso ja foi confirmado");
+        }
+      });
     }
 
-    data.map((item) => {
-      if (item.count == dataQrcode && item.active === false) {
-        verifyQrCode(item.id);
-      } else {
-        console.log("igresso ja foi confirmado");
-      }
-    });
+    teste();
   }, [dataQrcode]);
 
   async function verifyQrCode(id) {
