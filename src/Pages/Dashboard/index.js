@@ -7,7 +7,7 @@ import { db } from "../../Config/config";
 import { doc, updateDoc } from "firebase/firestore";
 
 export function Dashboard() {
-  const { data } = useContext(UserContext);
+  const { data, setModify } = useContext(UserContext);
   const [search, setSearch] = useState("");
   const [filteredRoad, setFilteredRoad] = useState([]);
 
@@ -19,7 +19,8 @@ export function Dashboard() {
         active: true,
       });
 
-      window.location.reload();
+      setModify(true);
+      //  window.location.reload();
     } catch {
       console.log("erro");
     }
