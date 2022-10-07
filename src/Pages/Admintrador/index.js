@@ -79,7 +79,7 @@ export function Admistrador() {
       const docRef = await addDoc(collection(db, "tickets"), {
         money: money,
         type: type,
-        count: count1.toLocaleString(),
+        count: +count1,
         active: false,
         qrcode: imgQrCode,
       });
