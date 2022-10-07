@@ -24,7 +24,7 @@ export function Admistrador() {
   const [qrCodeLink, setQrCodeLinkl] = useState("");
   const [isActiveModalQrCode, setIsActiveModalQrCode] = useState("");
   const [isActiveModal, setIsActiveModal] = useState(false);
-  const { data } = useContext(UserContext);
+  const { data, setModify } = useContext(UserContext);
   const [count, setCount] = useState("");
   const [numberQrCode, setNumberQrCode] = useState(0);
   const [img, setImg] = useState("");
@@ -84,7 +84,9 @@ export function Admistrador() {
       });
 
       console.log("Document written with ID: ", docRef.id);
-      window.location.reload();
+      setModify(true);
+      setMoney("");
+      setType("");
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -192,6 +194,7 @@ export function Admistrador() {
           <h3>Cadastro de ingresso</h3>
           <label htmlFor="">Valor</label>
           <input
+            required
             type="text"
             value={money}
             onChange={(event) => setMoney(event.target.value)}
