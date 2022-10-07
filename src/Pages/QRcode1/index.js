@@ -7,7 +7,7 @@ import { Container } from "./style";
 import { CheckCircle } from "phosphor-react";
 
 export function QRcode1() {
-  const { data } = useContext(UserContext);
+  const { data, setModify } = useContext(UserContext);
   const [dataQrcode, setDataQrcode] = useState("No result");
   const [isActiveQrCode, setIsActiveQrCode] = useState("block");
   const [confirmQrCode, setConfirmQrCode] = useState("none");
@@ -19,25 +19,27 @@ export function QRcode1() {
         setIsActiveQrCode("block");
         setConfirmQrCode("none");
       }
-
-      data.map((item) => {
-        if (item.count == dataQrcode && item.active === false) {
-          verifyQrCode(item.id);
-        }
-        if (item.count === dataQrcode && item.active === true) {
-          ticketsExistes();
-        }
-      });
     }
 
     let tete4 = data.filter((item) =>
-      item.count.toString().includes(dataQrcode)
+      item.count.toString().includes(+dataQrcode)
     );
 
-    if (tete4.length === 0) {
-      setError("ingresso não existe");
+    tete4.map((item) => {
+      if (item.count === +dataQrcode && item.active === false) {
+        verifyQrCode(item.id);
+      } else if (item.count === +dataQrcode && item.active === true) {
+        ticketsExistes();
+      } else {
+      }
+    });
+
+    var test56e = tete4.filter((elem, index, rr) => elem.count === +dataQrcode);
+    console.log("test56e ", test56e);
+    if (test56e.length === 0) {
       setIsActiveQrCode("none");
       setConfirmQrCode("block");
+      setError("igresso não existe");
     }
 
     teste();
@@ -61,7 +63,7 @@ export function QRcode1() {
   function ticketsExistes() {
     setIsActiveQrCode("none");
     setConfirmQrCode("block");
-    return setError("igresso ja foi confirmado");
+    setError("igresso ja foi confirmado");
   }
 
   //  constraints={{ facingMode: "environment" }}
@@ -81,6 +83,7 @@ export function QRcode1() {
           }}
           style={{ width: "100%" }}
         />
+        {dataQrcode}
       </div>
 
       <div className="confirm" style={{ display: confirmQrCode }}>
