@@ -28,9 +28,11 @@ export function Dashboard() {
   // filtro de pesdquisa
   useEffect(() => {
     if (data) {
-      setFilteredRoad(
-        data.filter((item) => item.count.includes(search.toLocaleUpperCase()))
-      );
+      if (data.length > 0) {
+        setFilteredRoad(
+          data.filter((item) => item.count.toString().includes(search))
+        );
+      }
     }
   }, [search]);
 

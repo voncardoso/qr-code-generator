@@ -60,8 +60,7 @@ export function Admistrador() {
         count1 = +item.count + 1;
       });
     }
-    //  count1 = data.length + 1;
-    console.log("count1", data, count1);
+
     let countString = count1.toString();
 
     QRCodeLink.toDataURL(
@@ -222,10 +221,12 @@ export function Admistrador() {
         overlayClassName="react-modal-overlay"
         className="react-modal-content"
       >
-        <img src={`${img}`} alt="" />
-        <a href={img} download={`qrcode_N=${numberQrCode}.png`}>
-          baixar
-        </a>
+        <div>
+          <img src={`${img}`} alt="" />
+          <a href={img} download={`qrcode_N=${numberQrCode}.png`}>
+            Baixar Qr Code
+          </a>
+        </div>
       </ModalQrCode>
     </>
   );
