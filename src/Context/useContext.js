@@ -12,6 +12,7 @@ export const UserContext = createContext();
 
 export const UserStorage = ({ children }) => {
   const [data, setData] = useState([]);
+  const [modify, setModify] = useState(null);
 
   useEffect(() => {
     async function getIngressos() {
@@ -21,11 +22,13 @@ export const UserStorage = ({ children }) => {
       //const order = query(querySnapshot, orderBy("count", "asc"));
       setData(querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     }
-
+    setModify(false);
     getIngressos();
-  }, []);
+  }, [modify]);
 
   return (
-    <UserContext.Provider value={{ data }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ data, modify, setModify }}>
+      {children}
+    </UserContext.Provider>
   );
 };

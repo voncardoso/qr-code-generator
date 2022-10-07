@@ -30,7 +30,9 @@ export function QRcode1() {
       });
     }
 
-    let tete4 = data.filter((item) => item.count.includes(dataQrcode));
+    let tete4 = data.filter((item) =>
+      item.count.toString().includes(dataQrcode)
+    );
 
     if (tete4.length === 0) {
       setError("ingresso não existe");
