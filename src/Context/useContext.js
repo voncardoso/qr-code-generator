@@ -24,6 +24,7 @@ export const UserStorage = ({ children }) => {
 
     getIngressos();
   }, []);
+
   return (
     <UserContext.Provider value={{ data }}>{children}</UserContext.Provider>
   );

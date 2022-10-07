@@ -90,32 +90,32 @@ export const GlobalStyle = createGlobalStyle`
         padding-bottom: 20px;
         
     }
-        input {
-          margin-top: 5px;
-          width: 100%;
-          padding: 10px 10px;
-          border-radius: 5px;
-          background: #ddd;
-          border: none;
-          margin-bottom: 20px;
-        }
-        input:focus,
-        select:focus {
-          outline: transparent;
-          box-shadow: 0 0 0 2px var(--gold-300);
-        }
-        select {
-          margin-top: 5px;
-          margin-bottom: 20px;
-          width: 100%;
-          padding: 10px 10px;
-          border-radius: 5px;
-          background: #ddd;
-          border: none;
-          font-size: 0.875rem;
-          line-height: 20px;
-          cursor: pointer;
-        }
+    input {
+      margin-top: 5px;
+      width: 100%;
+      padding: 10px 10px;
+      border-radius: 5px;
+      background: #ddd;
+      border: none;
+      margin-bottom: 20px;
+    }
+    input:focus,
+    select:focus {
+      outline: transparent;
+      box-shadow: 0 0 0 2px var(--gold-300);
+    }
+    select {
+      margin-top: 5px;
+      margin-bottom: 20px;
+      width: 100%;
+      padding: 10px 10px;
+      border-radius: 5px;
+      background: #ddd;
+      border: none;
+      font-size: 0.875rem;
+      line-height: 20px;
+      cursor: pointer;
+    }
     
     button {
       width: 100%;
@@ -130,13 +130,32 @@ export const GlobalStyle = createGlobalStyle`
       margin-top: 10px;
     }
 
-    .closeButtonModal:hover{
-        background: none;
-    }
+  button:hover {
+    background-color: rgba(19, 94, 159, 90%);
+  }
 
-    button:hover {
-      background: var(--gold-300);
-    }
+  .closeButtonModal:hover{
+      background: none;
+  }
+
+ div{
+  width: 100%;
+  a{
+    display:inline-block;
+    padding: 10px;
+    width: 300px;
+    text-align: center;
+    background: var(--blue-400);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 5px;
+    
+  }
+  a:hover{
+    background-color: rgba(19, 94, 159, 90%); 
+  }
+ }
+
 }
 
 `;
