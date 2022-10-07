@@ -14,18 +14,18 @@ export function QRcode1() {
   const [error, setError] = useState("none");
 
   useEffect(() => {
-    function teste() {
+    function VerifyNull() {
       if (dataQrcode === "No result") {
         setIsActiveQrCode("block");
         setConfirmQrCode("none");
       }
     }
 
-    let tete4 = data.filter((item) =>
+    let veryfyTicktesConfirm = data.filter((item) =>
       item.count.toString().includes(+dataQrcode)
     );
 
-    tete4.map((item) => {
+    veryfyTicktesConfirm.map((item) => {
       if (item.count === +dataQrcode && item.active === false) {
         verifyQrCode(item.id);
       } else if (item.count === +dataQrcode && item.active === true) {
@@ -34,15 +34,17 @@ export function QRcode1() {
       }
     });
 
-    var test56e = tete4.filter((elem, index, rr) => elem.count === +dataQrcode);
-    console.log("test56e ", test56e);
-    if (test56e.length === 0) {
+    var veryfyExisteArray = veryfyTicktesConfirm.filter(
+      (elem, index, rr) => elem.count === +dataQrcode
+    );
+
+    if (veryfyExisteArray.length === 0) {
       setIsActiveQrCode("none");
       setConfirmQrCode("block");
       setError("igresso não existe");
     }
 
-    teste();
+    VerifyNull();
   }, [dataQrcode]);
 
   async function verifyQrCode(id) {
