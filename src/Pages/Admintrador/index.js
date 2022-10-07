@@ -1,21 +1,34 @@
 import { Header } from "../../components/Header";
 import { Container } from "./style";
-import { CheckCircle, Checks, NotePencil, Trash } from "phosphor-react";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { CheckCircle, Checks, NotePencil, Trash, QrCode } from "phosphor-react";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../../Config/config";
 import { useContext, useEffect, useState } from "react";
-import QRCode from "react-qr-code";
 import QRCodeLink from "qrcode";
-import Modal from "react-modal";
 import { UserContext } from "../../Context/useContext";
+
+// qr-code
+import Modal from "react-modal";
+import ModalQrCode from "react-modal";
+import { click } from "@testing-library/user-event/dist/click";
 
 export function Admistrador() {
   const [money, setMoney] = useState("");
   const [type, setType] = useState("");
   const [qrCodeLink, setQrCodeLinkl] = useState("");
+  const [isActiveModalQrCode, setIsActiveModalQrCode] = useState("");
   const [isActiveModal, setIsActiveModal] = useState(false);
   const { data } = useContext(UserContext);
   const [count, setCount] = useState("");
+  const [numberQrCode, setNumberQrCode] = useState(0);
+  const [img, setImg] = useState("");
+  let count1 = 0;
 
   function handleOpenModal() {
     setIsActiveModal(true);
@@ -25,40 +38,65 @@ export function Admistrador() {
     setIsActiveModal(false);
   }
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    let count1 = 0;
-    data.map((item) => {
-      if (count1 < +item.count) {
-        count1 = +item.count + 1;
-      }
-    });
-
-    console.log("count", count1);
-    try {
-      const docRef = await addDoc(collection(db, "tickets"), {
-        money: money,
-        type: type,
-        count: count1.toLocaleString(),
-      });
-
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
+  function handleOpenModalQrCode(img1, numberQrcode) {
+    setIsActiveModalQrCode(true);
+    setImg(img1);
+    setNumberQrCode(numberQrcode);
   }
 
-  function DonwloadQRcode(link_url) {
+  function handleCloseModalQrCode() {
+    setIsActiveModalQrCode(false);
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    let imgQrCode = "";
+
+    if (data.length === 0) {
+      count1 = 1;
+    }
+    if (data.length > 0) {
+      data.map((item, index) => {
+        count1 = +item.count + 1;
+      });
+    }
+
+    let countString = count1.toString();
+
     QRCodeLink.toDataURL(
-      link_url,
+      countString,
       {
         width: 400,
         margin: 3,
       },
       function (err, url) {
-        setQrCodeLinkl(url);
+        imgQrCode = url;
       }
     );
+
+    try {
+      const docRef = await addDoc(collection(db, "tickets"), {
+        money: money,
+        type: type,
+        count: +count1,
+        active: false,
+        qrcode: imgQrCode,
+      });
+
+      console.log("Document written with ID: ", docRef.id);
+      window.location.reload();
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+
+  async function deleteTicktes(id) {
+    let response = window.confirm("Certeza que deseja excluir o item ?");
+
+    if (response === true) {
+      await deleteDoc(doc(db, "tickets", id));
+      window.location.reload();
+    }
   }
 
   return (
@@ -94,16 +132,6 @@ export function Admistrador() {
           Adicionar
         </button>
 
-        <a href="/qrcode">teste</a>
-        <a
-          onClick={() => {
-            DonwloadQRcode(count);
-          }}
-          href={qrCodeLink}
-          download={`qrcode.png`}
-        >
-          baixar
-        </a>
         <table>
           <thead>
             <tr>
@@ -122,12 +150,30 @@ export function Admistrador() {
                   <td>{item.money}</td>
                   <td>{item.type}</td>
                   <td>
-                    <NotePencil
-                      className="notePencil"
-                      size={25}
-                      color={"var(--green-300)"}
-                    />
-                    <Trash size={25} color={"var(--red-300)"} />
+                    <ul>
+                      <li
+                        onClick={() => {
+                          console.log("click", item.qrcode);
+                          handleOpenModalQrCode(item.qrcode, item.count);
+                        }}
+                      >
+                        <QrCode size={25} />
+                      </li>
+                      <li>
+                        <NotePencil
+                          className="notePencil"
+                          size={25}
+                          color={"var(--green-300)"}
+                        />
+                      </li>
+                      <li
+                        onClick={() => {
+                          deleteTicktes(item.id);
+                        }}
+                      >
+                        <Trash size={25} color={"var(--red-300)"} />
+                      </li>
+                    </ul>
                   </td>
                 </tr>
               );
@@ -135,6 +181,7 @@ export function Admistrador() {
           </tbody>
         </table>
       </Container>
+
       <Modal
         isOpen={isActiveModal}
         onRequestClose={handleCloseModal}
@@ -164,10 +211,23 @@ export function Admistrador() {
               <option value="Camarote">Camarote</option>
             </select>
           </label>
-          <QRCode value={"123"} />
-          <button>Cadastrar</button>
+          <button className="buttonAdd">Cadastrar</button>
         </form>
       </Modal>
+
+      <ModalQrCode
+        isOpen={isActiveModalQrCode}
+        onRequestClose={handleCloseModalQrCode}
+        overlayClassName="react-modal-overlay"
+        className="react-modal-content"
+      >
+        <div>
+          <img src={`${img}`} alt="" />
+          <a href={img} download={`qrcode_N=${numberQrCode}.png`}>
+            Baixar Qr Code
+          </a>
+        </div>
+      </ModalQrCode>
     </>
   );
 }

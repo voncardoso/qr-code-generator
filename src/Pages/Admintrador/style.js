@@ -48,6 +48,10 @@ export const Container = styled.section`
     color: var(--white);
   }
 
+  .buttonAdd:hover {
+    background-color: rgba(19, 94, 159, 90%);
+  }
+
   table {
     margin: 0 auto;
     width: 100%;
@@ -55,6 +59,7 @@ export const Container = styled.section`
     border-collapse: collapse;
     border-radius: 10px;
     overflow: auto;
+    margin-bottom: 10px;
     thead,
     th {
       color: var(--text);
@@ -92,6 +97,14 @@ export const Container = styled.section`
             font-weight: 600;
             border: none;
             border-radius: 5px;
+          }
+
+          ul {
+            display: flex;
+            justify-content: space-between;
+            li {
+              cursor: pointer;
+            }
           }
         }
         td:last-child {
