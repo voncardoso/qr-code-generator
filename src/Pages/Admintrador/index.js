@@ -1,7 +1,13 @@
 import { Header } from "../../components/Header";
 import { Container } from "./style";
 import { CheckCircle, Checks, NotePencil, Trash, QrCode } from "phosphor-react";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../../Config/config";
 import { useContext, useEffect, useState } from "react";
 import QRCodeLink from "qrcode";
@@ -31,6 +37,7 @@ export function Admistrador() {
   function handleCloseModal() {
     setIsActiveModal(false);
   }
+
   function handleOpenModalQrCode(img1, numberQrcode) {
     setIsActiveModalQrCode(true);
     setImg(img1);
@@ -44,7 +51,17 @@ export function Admistrador() {
   async function handleSubmit(event) {
     event.preventDefault();
     let imgQrCode = "";
-    count1 = data.length + 1;
+
+    if (data.length === 0) {
+      count1 = 1;
+    }
+    if (data.length > 0) {
+      data.map((item, index) => {
+        count1 = +item.count + 1;
+      });
+    }
+    //  count1 = data.length + 1;
+    console.log("count1", data, count1);
     let countString = count1.toString();
 
     QRCodeLink.toDataURL(
@@ -57,8 +74,6 @@ export function Admistrador() {
         imgQrCode = url;
       }
     );
-
-    console.log("qr", imgQrCode);
 
     try {
       const docRef = await addDoc(collection(db, "tickets"), {
@@ -76,17 +91,13 @@ export function Admistrador() {
     }
   }
 
-  function DonwloadQRcode(link_url) {
-    QRCodeLink.toDataURL(
-      link_url,
-      {
-        width: 400,
-        margin: 3,
-      },
-      function (err, url) {
-        setQrCodeLinkl(url);
-      }
-    );
+  async function deleteTicktes(id) {
+    let response = window.confirm("Certeza que deseja excluir o item ?");
+
+    if (response === true) {
+      await deleteDoc(doc(db, "tickets", id));
+      window.location.reload();
+    }
   }
 
   return (
@@ -156,7 +167,11 @@ export function Admistrador() {
                           color={"var(--green-300)"}
                         />
                       </li>
-                      <li>
+                      <li
+                        onClick={() => {
+                          deleteTicktes(item.id);
+                        }}
+                      >
                         <Trash size={25} color={"var(--red-300)"} />
                       </li>
                     </ul>
