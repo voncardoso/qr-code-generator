@@ -4,7 +4,7 @@ import { UserContext } from "../../Context/useContext";
 import { Container } from "./style";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import backgroungLogin from "../../assets/imagem-festa-tela-login.png"
+import backgroungLogin from "../../assets/imagem-festa-tela-login.png";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -15,7 +15,6 @@ export function Login() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log("clicl");
 
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
@@ -26,7 +25,7 @@ export function Login() {
           console.log("usuario existe");
           setLogin(true);
           window.localStorage.setItem("login", true);
-          navigate("/Dashboard");
+          navigate("/dashboard");
         }
         // ...
       })
@@ -37,12 +36,8 @@ export function Login() {
       });
   }
 
-  console.log("emial", email);
-  console.log("password", password);
   return (
     <Container>
-
-      
       <form onSubmit={handleSubmit}>
         <h1>Login</h1>
         <div>
@@ -53,7 +48,7 @@ export function Login() {
             onChange={(event) => setEmail(event.target.value)}
           />
         </div>
-        
+
         <div>
           <label htmlFor="">Senha</label>
           <input
@@ -63,12 +58,10 @@ export function Login() {
           />
         </div>
         <button>Login</button>
-        
       </form>
       <div className="containerImg">
         <img src={backgroungLogin} alt="" />
       </div>
-      
     </Container>
   );
 }

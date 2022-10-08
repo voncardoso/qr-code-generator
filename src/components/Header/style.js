@@ -64,6 +64,9 @@ export const Container = styled.header`
     }
   }
 
+  .activeAdm {
+  }
+
   @media (max-width: 823px) {
     padding: 0px 40px;
     height: 170px;
