@@ -160,6 +160,7 @@ export function Admistrador() {
 
   function usedTickets() {
     let useed = 0;
+
     data.map((item) => {
       if (item.active === true) {
         useed++;
@@ -168,6 +169,7 @@ export function Admistrador() {
 
     return useed;
   }
+
   return (
     <>
       <Header />
@@ -225,7 +227,12 @@ export function Admistrador() {
                   return (
                     <tr>
                       <td>{item.count}</td>
-                      <td>{item.money}</td>
+                      <td>
+                        {Number(item.money).toLocaleString("pt-br", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
+                      </td>
                       <td>{item.type}</td>
                       <td>
                         <ul>
@@ -260,7 +267,12 @@ export function Admistrador() {
                   return (
                     <tr>
                       <td>{item.count}</td>
-                      <td>{item.money}</td>
+                      <td>
+                        {Number(item.money).toLocaleString("pt-br", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
+                      </td>
                       <td>{item.type}</td>
                       <td>
                         <ul>
