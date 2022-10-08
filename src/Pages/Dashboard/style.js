@@ -176,6 +176,58 @@ export const Container = styled.section`
     }
   }
 
+  .paginacao {
+    background: transparent;
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+
+      button {
+        display: flex;
+        align-items: center;
+        align-self: center;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        border: none;
+        border-radius: 50%;
+        position: relative;
+        margin: 0 auto;
+        padding: 4px 8px;
+        box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 25%);
+        color: var(--blue-400);
+      }
+      button:hover {
+        background: var(--blue-400);
+        color: #fff;
+      }
+
+      button:last-child {
+        background: transparent;
+      }
+
+      .Anterior {
+        padding: 0px;
+        align-self: center;
+        cursor: pointer;
+        font-size: 0.875rem;
+        background: transparent;
+        box-shadow: none;
+      }
+      .Anterior:hover {
+        background: transparent;
+        background: transparent;
+        color: var(--blue-400);
+      }
+    }
+  }
+
   @media (max-width: 823px) {
     padding: 0px 40px;
     header {

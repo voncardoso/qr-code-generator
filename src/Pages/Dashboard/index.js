@@ -1,6 +1,15 @@
 import { Header } from "../../components/Header";
 import { Container } from "./style";
-import { CheckCircle, XCircle } from "phosphor-react";
+import {
+  CheckCircle,
+  XCircle,
+  Checks,
+  NotePencil,
+  Trash,
+  QrCode,
+  CaretDoubleRight,
+  CaretDoubleLeft,
+} from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Context/useContext";
 import { db } from "../../Config/config";
@@ -10,6 +19,27 @@ export function Dashboard() {
   const { data, setModify } = useContext(UserContext);
   const [search, setSearch] = useState("");
   const [filteredRoad, setFilteredRoad] = useState([]);
+  let data1 = [];
+  // numero de item por pagina
+  const [itensPerPage, setItensPerPage] = useState(10);
+  // escolher qual pagina
+  const [currentPage, setCurrentPerPage] = useState(0);
+
+  if (data) {
+    data.map((rodovia) => {
+      data1.push(rodovia);
+    });
+  }
+
+  console.log(data1.length);
+  // verificar o numero de paginas
+  const pages = Math.ceil(data1.length / itensPerPage);
+  // fatia o array de itens
+  const startIndex = currentPage * itensPerPage;
+  const endIndex = startIndex + itensPerPage;
+
+  // fatia o inicio ao final
+  const currentItens = data1.slice(startIndex, endIndex);
 
   async function verifyTickets(id) {
     const washingtonRef = doc(db, "tickets", id);
@@ -119,7 +149,7 @@ export function Dashboard() {
                     </tr>
                   );
                 })
-              : data.map((item) => {
+              : currentItens.map((item) => {
                   return (
                     <tr>
                       <td>{item.count}</td>
@@ -152,9 +182,69 @@ export function Dashboard() {
           </tbody>
         </table>
 
-        <div>
-          <h1>teste</h1>
-        </div>
+        {search > 0 ? (
+          ""
+        ) : (
+          <div className="paginacao">
+            <span>
+              {currentPage == 0 ? (
+                <button
+                  disabled
+                  className="Anterior"
+                  style={{
+                    background: "transparent",
+                    boxShadow: "none",
+                  }}
+                >
+                  <CaretDoubleLeft color=" #9baebf" size={18} />
+                </button>
+              ) : (
+                <button
+                  className="Anterior"
+                  onClick={() => {
+                    setCurrentPerPage(currentPage - 1);
+                  }}
+                >
+                  <CaretDoubleLeft size={18} />
+                </button>
+              )}
+
+              {Array.from(Array(pages), (item, index) => {
+                return (
+                  <button
+                    style={
+                      index == currentPage
+                        ? {
+                            background: "var(--blue-400)",
+                            color: "var(--white)",
+                          }
+                        : null
+                    }
+                    className="paginationButton"
+                    value={index}
+                    onClick={(e) => setCurrentPerPage(e.target.value)}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              })}
+              {currentPage == pages - 1 ? (
+                <button disabled className="Anterior">
+                  <CaretDoubleRight color=" #9baebf" size={18} />
+                </button>
+              ) : (
+                <button
+                  className="Anterior"
+                  onClick={() => {
+                    setCurrentPerPage(currentPage + 1);
+                  }}
+                >
+                  <CaretDoubleRight size={18} />
+                </button>
+              )}
+            </span>
+          </div>
+        )}
       </Container>
     </>
   );
