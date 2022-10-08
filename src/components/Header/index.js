@@ -13,7 +13,7 @@ export function Header() {
   const [styleDashboard, setStyleDashboard] = useState(false);
   const [isActiveMenuMobilemenuMobile, setIsActiveMenuMobile] =
     useState("none");
-  let match = null;
+  const [isActiveButtonMobile, setIisActiveButtonMobile] = useState(false);
 
   useEffect(() => {
     function routeStyle() {
@@ -46,36 +46,37 @@ export function Header() {
       });
   }
 
-  useEffect(() => {
-    function changeMacth() {
-      const { matches } = window.matchMedia("(max-width: 823px");
-      match = matches;
-    }
-    changeMacth();
-    window.addEventListener("resize", changeMacth);
-    if (match === true) {
-      setIsActiveMenuMobile("none");
-    }
-
-    return () => {
-      window.removeEventListener("risize", changeMacth);
-    };
-  }, [match]);
-
   return (
     <Container>
       <nav>
-        <button
-          className="button-menu-mobile"
-          onClick={() => {
-            if (isActiveMenuMobilemenuMobile === "none")
-              setIsActiveMenuMobile("block");
-            if (isActiveMenuMobilemenuMobile == "block")
-              setIsActiveMenuMobile("none");
-          }}
-        >
-          <List size={32} />
-        </button>
+        {isActiveButtonMobile ? (
+          <button
+            className="button-menu-mobile"
+            onClick={() => {
+              setIisActiveButtonMobile(false);
+              if (isActiveMenuMobilemenuMobile === "none")
+                setIsActiveMenuMobile("block");
+              if (isActiveMenuMobilemenuMobile == "block")
+                setIsActiveMenuMobile("none");
+            }}
+          >
+            <List size={32} />
+          </button>
+        ) : (
+          <button
+            className="button-menu-mobile"
+            onClick={() => {
+              setIisActiveButtonMobile(true);
+              if (isActiveMenuMobilemenuMobile === "none")
+                setIsActiveMenuMobile("block");
+              if (isActiveMenuMobilemenuMobile == "block")
+                setIsActiveMenuMobile("none");
+            }}
+          >
+            <List size={32} color={"var(--blue-400)"} />
+          </button>
+        )}
+
         <h1></h1>
 
         <div>
@@ -107,6 +108,7 @@ export function Header() {
       >
         <div
           onClick={() => {
+            setIisActiveButtonMobile(false);
             if (isActiveMenuMobilemenuMobile === "none")
               setIsActiveMenuMobile("block");
             if (isActiveMenuMobilemenuMobile == "block")
