@@ -99,6 +99,7 @@ export const Container = styled.section`
           width: 25%;
           padding: 10px 30px;
           border-bottom: 5px solid var(--background);
+          height: 60px;
           button {
             background: var(--blue-400);
             padding: 10px 20px;

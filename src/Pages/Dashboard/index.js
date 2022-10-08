@@ -96,7 +96,7 @@ export function Dashboard() {
           </ul>
         </header>
 
-        <span>
+        <span className="inputHerader">
           <input
             type="search"
             placeholder="Buscar Ingresso"
