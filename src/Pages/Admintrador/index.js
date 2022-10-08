@@ -157,6 +157,17 @@ export function Admistrador() {
       currency: "BRL",
     });
   }
+
+  function usedTickets() {
+    let useed = 0;
+    data.map((item) => {
+      if (item.active === true) {
+        useed++;
+      }
+    });
+
+    return useed;
+  }
   return (
     <>
       <Header />
@@ -168,14 +179,14 @@ export function Admistrador() {
                 <span>Vendidos</span>
                 <CheckCircle size={25} color={"var(--green-300)"} />
               </div>
-              <strong>200</strong>
+              <strong>{data.length}</strong>
             </li>
             <li>
               <div>
                 <span>Usados</span>
                 <Checks size={25} color={"var(--blue-300)"} />
               </div>
-              <strong>190</strong>
+              <strong>{usedTickets()}</strong>
             </li>
             <li>
               <div>
