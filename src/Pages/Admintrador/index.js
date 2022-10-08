@@ -11,7 +11,7 @@ import {
 } from "phosphor-react";
 import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../Config/config";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import QRCodeLink from "qrcode";
 import { UserContext } from "../../Context/useContext";
 
@@ -28,6 +28,8 @@ export function Admistrador() {
   const [numberQrCode, setNumberQrCode] = useState(0);
   const [img, setImg] = useState("");
   const [amountBatch, setAmountBatch] = useState(0);
+  const [search, setSearch] = useState("");
+  const [filteredRoad, setFilteredRoad] = useState([]);
   let data1 = [];
   // numero de item por pagina
   const [itensPerPage, setItensPerPage] = useState(10);
@@ -130,6 +132,17 @@ export function Admistrador() {
   const currentItens = data1.slice(startIndex, endIndex);
   console.log("cur", currentItens);
 
+  // filtro de pesdquisa
+  useEffect(() => {
+    if (data) {
+      if (data.length > 0) {
+        setFilteredRoad(
+          data.filter((item) => item.count.toString().includes(search))
+        );
+      }
+    }
+  }, [search]);
+
   return (
     <>
       <Header />
@@ -159,9 +172,18 @@ export function Admistrador() {
           </ul>
         </header>
 
-        <button className="buttonAdd" onClick={handleOpenModal}>
-          Adicionar
-        </button>
+        <span className="inputHerader">
+          <input
+            type="search"
+            placeholder="Buscar Ingresso"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+
+          <button className="buttonAdd" onClick={handleOpenModal}>
+            Adicionar
+          </button>
+        </span>
         <table>
           <thead>
             <tr>
@@ -173,99 +195,142 @@ export function Admistrador() {
           </thead>
 
           <tbody>
-            {currentItens.map((item) => {
-              return (
-                <tr>
-                  <td>{item.count}</td>
-                  <td>{item.money}</td>
-                  <td>{item.type}</td>
-                  <td>
-                    <ul>
-                      <li
-                        onClick={() => {
-                          console.log("click", item.qrcode);
-                          handleOpenModalQrCode(item.qrcode, item.count);
-                        }}
-                      >
-                        <QrCode size={25} />
-                      </li>
-                      <li>
-                        <NotePencil
-                          className="notePencil"
-                          size={25}
-                          color={"var(--green-300)"}
-                        />
-                      </li>
-                      <li
-                        onClick={() => {
-                          deleteTicktes(item.id);
-                        }}
-                      >
-                        <Trash size={25} color={"var(--red-300)"} />
-                      </li>
-                    </ul>
-                  </td>
-                </tr>
-              );
-            })}
+            {search.length > 0
+              ? filteredRoad.map((item) => {
+                  return (
+                    <tr>
+                      <td>{item.count}</td>
+                      <td>{item.money}</td>
+                      <td>{item.type}</td>
+                      <td>
+                        <ul>
+                          <li
+                            onClick={() => {
+                              console.log("click", item.qrcode);
+                              handleOpenModalQrCode(item.qrcode, item.count);
+                            }}
+                          >
+                            <QrCode size={25} />
+                          </li>
+                          <li>
+                            <NotePencil
+                              className="notePencil"
+                              size={25}
+                              color={"var(--green-300)"}
+                            />
+                          </li>
+                          <li
+                            onClick={() => {
+                              deleteTicktes(item.id);
+                            }}
+                          >
+                            <Trash size={25} color={"var(--red-300)"} />
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                  );
+                })
+              : currentItens.map((item) => {
+                  return (
+                    <tr>
+                      <td>{item.count}</td>
+                      <td>{item.money}</td>
+                      <td>{item.type}</td>
+                      <td>
+                        <ul>
+                          <li
+                            onClick={() => {
+                              console.log("click", item.qrcode);
+                              handleOpenModalQrCode(item.qrcode, item.count);
+                            }}
+                          >
+                            <QrCode size={25} />
+                          </li>
+                          <li>
+                            <NotePencil
+                              className="notePencil"
+                              size={25}
+                              color={"var(--green-300)"}
+                            />
+                          </li>
+                          <li
+                            onClick={() => {
+                              deleteTicktes(item.id);
+                            }}
+                          >
+                            <Trash size={25} color={"var(--red-300)"} />
+                          </li>
+                        </ul>
+                      </td>
+                    </tr>
+                  );
+                })}
           </tbody>
         </table>
-        <div className="paginacao">
-          <span>
-            {currentPage == 0 ? (
-              <button
-                disabled
-                className="Anterior"
-                style={{
-                  background: "transparent",
-                  boxShadow: "none",
-                }}
-              >
-                <CaretDoubleLeft color=" #9baebf" size={18} />
-              </button>
-            ) : (
-              <button
-                className="Anterior"
-                onClick={() => {
-                  setCurrentPerPage(currentPage - 1);
-                }}
-              >
-                <CaretDoubleLeft size={18} />
-              </button>
-            )}
-
-            {Array.from(Array(pages), (item, index) => {
-              return (
+        {search > 0 ? (
+          ""
+        ) : (
+          <div className="paginacao">
+            <span>
+              {currentPage == 0 ? (
                 <button
-                  style={
-                    index == currentPage
-                      ? { background: "var(--blue-400)", color: "var(--white)" }
-                      : null
-                  }
-                  className="paginationButton"
-                  value={index}
-                  onClick={(e) => setCurrentPerPage(e.target.value)}
+                  disabled
+                  className="Anterior"
+                  style={{
+                    background: "transparent",
+                    boxShadow: "none",
+                  }}
                 >
-                  {index + 1}
+                  <CaretDoubleLeft color=" #9baebf" size={18} />
                 </button>
-              );
-            })}
-            {currentPage == pages - 1 ? (
-              <button disabled className="Anterior">
-                <CaretDoubleRight color=" #9baebf" size={18} />
-              </button>
-            ) : (
-              <button
-                className="Anterior"
-                onClick={() => {
-                  setCurrentPerPage(currentPage + 1);
-                }}
-              >
-                <CaretDoubleRight size={18} />
-              </button>
-            )}
-          </span>
-        </div>
+              ) : (
+                <button
+                  className="Anterior"
+                  onClick={() => {
+                    setCurrentPerPage(currentPage - 1);
+                  }}
+                >
+                  <CaretDoubleLeft size={18} />
+                </button>
+              )}
+
+              {Array.from(Array(pages), (item, index) => {
+                return (
+                  <button
+                    style={
+                      index == currentPage
+                        ? {
+                            background: "var(--blue-400)",
+                            color: "var(--white)",
+                          }
+                        : null
+                    }
+                    className="paginationButton"
+                    value={index}
+                    onClick={(e) => setCurrentPerPage(e.target.value)}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              })}
+              {currentPage == pages - 1 ? (
+                <button disabled className="Anterior">
+                  <CaretDoubleRight color=" #9baebf" size={18} />
+                </button>
+              ) : (
+                <button
+                  className="Anterior"
+                  onClick={() => {
+                    setCurrentPerPage(currentPage + 1);
+                  }}
+                >
+                  <CaretDoubleRight size={18} />
+                </button>
+              )}
+            </span>
+          </div>
+        )}
       </Container>
       <Modal
         isOpen={isActiveModal}

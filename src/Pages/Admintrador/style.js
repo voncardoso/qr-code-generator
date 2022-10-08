@@ -36,20 +36,30 @@ export const Container = styled.section`
       }
     }
   }
+  .inputHerader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    input {
+      padding: 5px;
+      border-radius: 5px;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
 
-  .buttonAdd {
-    position: relative;
-    left: 88%;
-    margin-bottom: 20px;
-    padding: 8px 20px;
-    border-radius: 5px;
-    background-color: var(--blue-400);
-    border: none;
-    color: var(--white);
-  }
+    .buttonAdd {
+      position: relative;
+      margin-bottom: 20px;
+      padding: 8px 20px;
+      border-radius: 5px;
+      background-color: var(--blue-400);
+      border: none;
+      color: var(--white);
+    }
 
-  .buttonAdd:hover {
-    background-color: rgba(19, 94, 159, 90%);
+    .buttonAdd:hover {
+      background-color: rgba(19, 94, 159, 90%);
+    }
   }
 
   table {
