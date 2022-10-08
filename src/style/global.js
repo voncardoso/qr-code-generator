@@ -158,4 +158,17 @@ export const GlobalStyle = createGlobalStyle`
 
 }
 
+@media (max-width: 500px) {
+  .react-modal-content{
+    padding: 2rem;
+    margin: 20px;
+    div{
+        width: 100%;
+       a{
+          width: 100%;
+        }
+      }
+    }
+  }
+
 `;

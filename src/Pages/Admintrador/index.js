@@ -1,5 +1,5 @@
 import { Header } from "../../components/Header";
-import { Container } from "./style";
+import { Container, Mobali } from "./style";
 import {
   CheckCircle,
   Checks,
@@ -332,6 +332,143 @@ export function Admistrador() {
           </div>
         )}
       </Container>
+      <Mobali>
+        {search.length > 0
+          ? filteredRoad.map((item) => {
+              return (
+                <ul>
+                  <li>Ingresso: {item.count}</li>
+                  <li>{item.money}</li>
+                  <li>{item.type}</li>
+                  <li>
+                    <QrCode
+                      size={25}
+                      onClick={() => {
+                        console.log("click", item.qrcode);
+                        handleOpenModalQrCode(item.qrcode, item.count);
+                      }}
+                    />
+
+                    <NotePencil
+                      className="notePencil"
+                      size={25}
+                      color={"var(--green-300)"}
+                    />
+
+                    <Trash
+                      size={25}
+                      color={"var(--red-300)"}
+                      onClick={() => {
+                        deleteTicktes(item.id);
+                      }}
+                    />
+                  </li>
+                </ul>
+              );
+            })
+          : currentItens.map((item) => {
+              return (
+                <ul>
+                  <li>
+                    Nº: <p>{item.count}</p>
+                  </li>
+                  <li>
+                    Valor: <p>{item.money}</p>
+                  </li>
+                  <li>
+                    Tipo: <p>{item.type}</p>
+                  </li>
+                  <li>
+                    <QrCode
+                      size={25}
+                      color={"#000"}
+                      onClick={() => {
+                        console.log("click", item.qrcode);
+                        handleOpenModalQrCode(item.qrcode, item.count);
+                      }}
+                    />
+
+                    <NotePencil
+                      className="notePencil"
+                      size={25}
+                      color={"var(--green-300)"}
+                    />
+
+                    <Trash
+                      size={25}
+                      color={"var(--red-300)"}
+                      onClick={() => {
+                        deleteTicktes(item.id);
+                      }}
+                    />
+                  </li>
+                </ul>
+              );
+            })}
+        {search > 0 ? (
+          ""
+        ) : (
+          <div className="paginacaoMobile">
+            <span>
+              {currentPage == 0 ? (
+                <button
+                  disabled
+                  className="Anterior"
+                  style={{
+                    background: "transparent",
+                    boxShadow: "none",
+                  }}
+                >
+                  <CaretDoubleLeft color=" #9baebf" size={18} />
+                </button>
+              ) : (
+                <button
+                  className="Anterior"
+                  onClick={() => {
+                    setCurrentPerPage(currentPage - 1);
+                  }}
+                >
+                  <CaretDoubleLeft size={18} />
+                </button>
+              )}
+
+              {Array.from(Array(pages), (item, index) => {
+                return (
+                  <button
+                    style={
+                      index == currentPage
+                        ? {
+                            background: "var(--blue-400)",
+                            color: "var(--white)",
+                          }
+                        : null
+                    }
+                    className="paginationButton"
+                    value={index}
+                    onClick={(e) => setCurrentPerPage(e.target.value)}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              })}
+              {currentPage == pages - 1 ? (
+                <button disabled className="Anterior">
+                  <CaretDoubleRight color=" #9baebf" size={18} />
+                </button>
+              ) : (
+                <button
+                  className="Anterior"
+                  onClick={() => {
+                    setCurrentPerPage(currentPage + 1);
+                  }}
+                >
+                  <CaretDoubleRight size={18} />
+                </button>
+              )}
+            </span>
+          </div>
+        )}
+      </Mobali>
       <Modal
         isOpen={isActiveModal}
         onRequestClose={handleCloseModal}
