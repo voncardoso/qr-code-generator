@@ -271,9 +271,6 @@ export const Container = styled.section`
     table {
       display: none;
     }
-    .paginacao {
-      display: none;
-    }
   }
 
   @media (max-width: 490px) {

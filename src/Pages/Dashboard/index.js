@@ -1,5 +1,5 @@
 import { Header } from "../../components/Header";
-import { Container } from "./style";
+import { Container, Mobali } from "./style";
 import {
   CheckCircle,
   XCircle,
@@ -246,6 +246,138 @@ export function Dashboard() {
           </div>
         )}
       </Container>
+      <Mobali>
+        {search.length > 0
+          ? filteredRoad.map((item) => {
+              return (
+                <ul>
+                  <li>Ingresso: {item.count}</li>
+                  <li>{item.money}</li>
+                  <li>{item.type}</li>
+                  <li>
+                    {item.active ? (
+                      <button
+                        style={{
+                          background: "transparent",
+                          color: "#78BAAE",
+                          fontSize: "1rem",
+                        }}
+                      >
+                        Verificado
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          verifyTickets(item.id);
+                        }}
+                      >
+                        Confirmar
+                      </button>
+                    )}
+                  </li>
+                </ul>
+              );
+            })
+          : currentItens.map((item) => {
+              return (
+                <ul>
+                  <li>
+                    Nº: <p>{item.count}</p>
+                  </li>
+                  <li>
+                    Valor: <p>{item.money}</p>
+                  </li>
+                  <li>
+                    Tipo: <p>{item.type}</p>
+                  </li>
+                  <li>
+                    {item.active ? (
+                      <button
+                        style={{
+                          background: "#78BAAE",
+                          color: "#fff",
+                          fontSize: "1rem",
+                        }}
+                      >
+                        Verificado
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          verifyTickets(item.id);
+                        }}
+                      >
+                        Confirmar
+                      </button>
+                    )}
+                  </li>
+                </ul>
+              );
+            })}
+        {search > 0 ? (
+          ""
+        ) : (
+          <div className="paginacaoMobile">
+            <span>
+              {currentPage == 0 ? (
+                <button
+                  disabled
+                  className="Anterior"
+                  style={{
+                    background: "transparent",
+                    boxShadow: "none",
+                  }}
+                >
+                  <CaretDoubleLeft color=" #9baebf" size={18} />
+                </button>
+              ) : (
+                <button
+                  className="Anterior"
+                  onClick={() => {
+                    setCurrentPerPage(currentPage - 1);
+                  }}
+                >
+                  <CaretDoubleLeft size={18} />
+                </button>
+              )}
+
+              {Array.from(Array(pages), (item, index) => {
+                return (
+                  <button
+                    style={
+                      index == currentPage
+                        ? {
+                            background: "var(--blue-400)",
+                            color: "var(--white)",
+                          }
+                        : null
+                    }
+                    className="paginationButton"
+                    value={index}
+                    onClick={(e) => setCurrentPerPage(e.target.value)}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              })}
+              {currentPage == pages - 1 ? (
+                <button disabled className="Anterior">
+                  <CaretDoubleRight color=" #9baebf" size={18} />
+                </button>
+              ) : (
+                <button
+                  className="Anterior"
+                  onClick={() => {
+                    setCurrentPerPage(currentPage + 1);
+                  }}
+                >
+                  <CaretDoubleRight size={18} />
+                </button>
+              )}
+            </span>
+          </div>
+        )}
+      </Mobali>
     </>
   );
 }
