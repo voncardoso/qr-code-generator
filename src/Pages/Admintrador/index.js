@@ -21,13 +21,12 @@ import { click } from "@testing-library/user-event/dist/click";
 export function Admistrador() {
   const [money, setMoney] = useState("");
   const [type, setType] = useState("");
-  const [qrCodeLink, setQrCodeLinkl] = useState("");
   const [isActiveModalQrCode, setIsActiveModalQrCode] = useState("");
   const [isActiveModal, setIsActiveModal] = useState(false);
   const { data, setModify } = useContext(UserContext);
-  const [count, setCount] = useState("");
   const [numberQrCode, setNumberQrCode] = useState(0);
   const [img, setImg] = useState("");
+  const [amountBatch, setAmountBatch] = useState(0);
   let count1 = 0;
 
   function handleOpenModal() {
@@ -92,12 +91,62 @@ export function Admistrador() {
     }
   }
 
+  async function handleSubmitBatch(event) {
+    event.preventDefault();
+    console.log("lote");
+    if (data.length === 0) {
+      count1 = 1;
+    }
+    if (data.length > 0) {
+      await data.map((item, index) => {
+        count1 = +item.count + 1;
+      });
+    }
+    for (let i = 1; i <= amountBatch; i++) {
+      let imgQrCode = "";
+      if (i > 1) {
+        count1 = count1 + 1;
+      }
+      console.log(count1);
+      let countString = count1.toString();
+
+      QRCodeLink.toDataURL(
+        countString,
+        {
+          width: 400,
+          margin: 3,
+        },
+        function (err, url) {
+          imgQrCode = url;
+        }
+      );
+
+      try {
+        const docRef = await addDoc(collection(db, "tickets"), {
+          money: money,
+          type: type,
+          count: +count1,
+          active: false,
+          qrcode: imgQrCode,
+        });
+
+        console.log("Document written with ID: ", docRef.id);
+        setModify(true);
+        setMoney("");
+        setType("");
+        console.log("lote1");
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+    }
+  }
+
   async function deleteTicktes(id) {
     let response = window.confirm("Certeza que deseja excluir o item ?");
 
     if (response === true) {
       await deleteDoc(doc(db, "tickets", id));
-      window.location.reload();
+      setModify(true);
     }
   }
 
@@ -133,7 +182,6 @@ export function Admistrador() {
         <button className="buttonAdd" onClick={handleOpenModal}>
           Adicionar
         </button>
-
         <table>
           <thead>
             <tr>
@@ -190,7 +238,7 @@ export function Admistrador() {
         overlayClassName="react-modal-overlay"
         className="react-modal-content"
       >
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmitBatch}>
           <h3>Cadastro de ingresso</h3>
           <label htmlFor="">Valor</label>
           <input
@@ -214,7 +262,17 @@ export function Admistrador() {
               <option value="Camarote">Camarote</option>
             </select>
           </label>
-          <button className="buttonAdd">Cadastrar</button>
+
+          <label htmlFor="">Quantidade de Ingresso</label>
+          <input
+            required
+            type="text"
+            value={amountBatch}
+            onChange={(event) => setAmountBatch(event.target.value)}
+          />
+          <button type="" className="buttonAdd" onClick={handleSubmitBatch}>
+            Cadastrar
+          </button>
         </form>
       </Modal>
 
