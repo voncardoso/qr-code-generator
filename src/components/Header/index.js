@@ -11,6 +11,8 @@ export function Header() {
   const { pathname } = useLocation();
   const [styleAdministrador, setStyleAdministrador] = useState(false);
   const [styleDashboard, setStyleDashboard] = useState(false);
+  const [isActiveMenuMobilemenuMobile, setIsActiveMenuMobile] =
+    useState("none");
 
   useEffect(() => {
     function routeStyle() {
@@ -46,7 +48,19 @@ export function Header() {
   return (
     <Container>
       <nav>
+        <button
+          className="button-menu-mobile"
+          onClick={() => {
+            if (isActiveMenuMobilemenuMobile === "none")
+              setIsActiveMenuMobile("block");
+            if (isActiveMenuMobilemenuMobile == "block")
+              setIsActiveMenuMobile("none");
+          }}
+        >
+          <List size={32} />
+        </button>
         <h1></h1>
+
         <div>
           {styleDashboard ? (
             <Link className="isActive" to="/dashboard">
@@ -68,10 +82,51 @@ export function Header() {
             <SignOut size={20} />
           </button>
         </div>
-        <a href="#" className="menu-mobile">
-          <List size={32} />
-        </a>
       </nav>
+
+      <section
+        className="menu-mobile"
+        style={{ display: isActiveMenuMobilemenuMobile }}
+      >
+        <div
+          onClick={() => {
+            if (isActiveMenuMobilemenuMobile === "none")
+              setIsActiveMenuMobile("block");
+            if (isActiveMenuMobilemenuMobile == "block")
+              setIsActiveMenuMobile("none");
+          }}
+        >
+          <nav>
+            <ul>
+              <li>
+                {styleDashboard ? (
+                  <Link className="isActive" to="/dashboard">
+                    Dashboard
+                  </Link>
+                ) : (
+                  <Link to="/dashboard">Dashboard</Link>
+                )}
+              </li>
+              <li>
+                {styleAdministrador ? (
+                  <Link className="isActive" to="/administrador">
+                    Administrador
+                  </Link>
+                ) : (
+                  <Link to="/administrador">Administrador</Link>
+                )}
+              </li>
+              <li>
+                {" "}
+                <button onClick={Logout}>
+                  <p>Sair</p>
+                  <SignOut size={20} />
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </section>
     </Container>
   );
 }
