@@ -1,22 +1,23 @@
 import { Header } from "../../components/Header";
 import { Container } from "./style";
-import { CheckCircle, Checks, NotePencil, Trash, QrCode } from "phosphor-react";
 import {
-  collection,
-  addDoc,
-  getDocs,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
+  CheckCircle,
+  Checks,
+  NotePencil,
+  Trash,
+  QrCode,
+  CaretDoubleRight,
+  CaretDoubleLeft,
+} from "phosphor-react";
+import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../Config/config";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import QRCodeLink from "qrcode";
 import { UserContext } from "../../Context/useContext";
 
 // qr-code
 import Modal from "react-modal";
 import ModalQrCode from "react-modal";
-import { click } from "@testing-library/user-event/dist/click";
 
 export function Admistrador() {
   const [money, setMoney] = useState("");
@@ -27,6 +28,12 @@ export function Admistrador() {
   const [numberQrCode, setNumberQrCode] = useState(0);
   const [img, setImg] = useState("");
   const [amountBatch, setAmountBatch] = useState(0);
+  let data1 = [];
+  // numero de item por pagina
+  const [itensPerPage, setItensPerPage] = useState(10);
+  // escolher qual pagina
+  const [currentPage, setCurrentPerPage] = useState(0);
+
   let count1 = 0;
 
   function handleOpenModal() {
@@ -45,50 +52,6 @@ export function Admistrador() {
 
   function handleCloseModalQrCode() {
     setIsActiveModalQrCode(false);
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    let imgQrCode = "";
-
-    if (data.length === 0) {
-      count1 = 1;
-    }
-    if (data.length > 0) {
-      data.map((item, index) => {
-        count1 = +item.count + 1;
-      });
-    }
-
-    let countString = count1.toString();
-
-    QRCodeLink.toDataURL(
-      countString,
-      {
-        width: 400,
-        margin: 3,
-      },
-      function (err, url) {
-        imgQrCode = url;
-      }
-    );
-
-    try {
-      const docRef = await addDoc(collection(db, "tickets"), {
-        money: money,
-        type: type,
-        count: +count1,
-        active: false,
-        qrcode: imgQrCode,
-      });
-
-      console.log("Document written with ID: ", docRef.id);
-      setModify(true);
-      setMoney("");
-      setType("");
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
   }
 
   async function handleSubmitBatch(event) {
@@ -150,6 +113,23 @@ export function Admistrador() {
     }
   }
 
+  if (data) {
+    data.map((rodovia) => {
+      data1.push(rodovia);
+    });
+  }
+
+  console.log(data1.length);
+  // verificar o numero de paginas
+  const pages = Math.ceil(data1.length / itensPerPage);
+  // fatia o array de itens
+  const startIndex = currentPage * itensPerPage;
+  const endIndex = startIndex + itensPerPage;
+
+  // fatia o inicio ao final
+  const currentItens = data1.slice(startIndex, endIndex);
+  console.log("cur", currentItens);
+
   return (
     <>
       <Header />
@@ -193,7 +173,7 @@ export function Admistrador() {
           </thead>
 
           <tbody>
-            {data.map((item) => {
+            {currentItens.map((item) => {
               return (
                 <tr>
                   <td>{item.count}</td>
@@ -230,8 +210,63 @@ export function Admistrador() {
             })}
           </tbody>
         </table>
-      </Container>
+        <div className="paginacao">
+          <span>
+            {currentPage == 0 ? (
+              <button
+                disabled
+                className="Anterior"
+                style={{
+                  background: "transparent",
+                  boxShadow: "none",
+                }}
+              >
+                <CaretDoubleLeft color=" #9baebf" size={18} />
+              </button>
+            ) : (
+              <button
+                className="Anterior"
+                onClick={() => {
+                  setCurrentPerPage(currentPage - 1);
+                }}
+              >
+                <CaretDoubleLeft size={18} />
+              </button>
+            )}
 
+            {Array.from(Array(pages), (item, index) => {
+              return (
+                <button
+                  style={
+                    index == currentPage
+                      ? { background: "var(--blue-400)", color: "var(--white)" }
+                      : null
+                  }
+                  className="paginationButton"
+                  value={index}
+                  onClick={(e) => setCurrentPerPage(e.target.value)}
+                >
+                  {index + 1}
+                </button>
+              );
+            })}
+            {currentPage == pages - 1 ? (
+              <button disabled className="Anterior">
+                <CaretDoubleRight color=" #9baebf" size={18} />
+              </button>
+            ) : (
+              <button
+                className="Anterior"
+                onClick={() => {
+                  setCurrentPerPage(currentPage + 1);
+                }}
+              >
+                <CaretDoubleRight size={18} />
+              </button>
+            )}
+          </span>
+        </div>
+      </Container>
       <Modal
         isOpen={isActiveModal}
         onRequestClose={handleCloseModal}
