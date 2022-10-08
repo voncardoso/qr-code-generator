@@ -10,13 +10,11 @@ export const Container = styled.section`
       top: -70px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      justify-content: space-between;
       gap: 30px;
       padding: 10px 10px;
       overflow-x: auto;
       li {
         max-width: 400px;
-        margin: 0 auto;
         width: 100%;
         border-radius: 10px;
         padding: 20px 30px;

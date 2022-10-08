@@ -2,10 +2,16 @@ import styled from "styled-components";
 
 export const Container = styled.header`
   height: 220px;
-  background: var(--blue-400);
+  background: rgb(230, 237, 242);
+  background: linear-gradient(
+    0deg,
+    rgba(230, 237, 242, 1) 0%,
+    rgba(0, 61, 167, 1) 93%
+  );
   width: 100%;
-  padding: 0px 80px;
+
   nav {
+    width: 100%;
     display: flex;
 
     margin: 0 auto;
