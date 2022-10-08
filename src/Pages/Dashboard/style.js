@@ -10,11 +10,13 @@ export const Container = styled.section`
       top: -70px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
+      justify-content: space-between;
       gap: 30px;
       padding: 10px 10px;
       overflow-x: auto;
       li {
         max-width: 400px;
+        margin: 0 auto;
         width: 100%;
         border-radius: 10px;
         padding: 20px 30px;
@@ -92,13 +94,13 @@ export const Container = styled.section`
         margin-bottom: 40px;
 
         td {
-          padding: 10px 10px;
           font-size: 1.125rem;
           background: var(--white);
           max-width: 200px;
           width: 25%;
-          padding: 10px 20px;
+          padding: 10px 30px;
           border-bottom: 5px solid var(--background);
+          height: 60px;
           button {
             background: var(--blue-400);
             padding: 10px 20px;
@@ -263,6 +265,20 @@ export const Container = styled.section`
   @media (max-width: 517px) {
     table {
       display: none;
+    }
+  }
+
+  @media (max-width: 425px) {
+    .inputHerader {
+      input {
+        max-width: 180px;
+        width: 100%;
+        margin-right: 20px;
+      }
+
+      a {
+        font-size: 13px;
+      }
     }
   }
 `;
