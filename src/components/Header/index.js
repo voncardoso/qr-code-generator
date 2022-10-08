@@ -13,6 +13,7 @@ export function Header() {
   const [styleDashboard, setStyleDashboard] = useState(false);
   const [isActiveMenuMobilemenuMobile, setIsActiveMenuMobile] =
     useState("none");
+  let match = null;
 
   useEffect(() => {
     function routeStyle() {
@@ -44,6 +45,22 @@ export function Header() {
         // An error happened.
       });
   }
+
+  useEffect(() => {
+    function changeMacth() {
+      const { matches } = window.matchMedia("(max-width: 823px");
+      match = matches;
+    }
+    changeMacth();
+    window.addEventListener("resize", changeMacth);
+    if (match === true) {
+      setIsActiveMenuMobile("none");
+    }
+
+    return () => {
+      window.removeEventListener("risize", changeMacth);
+    };
+  }, [match]);
 
   return (
     <Container>
@@ -97,7 +114,7 @@ export function Header() {
           }}
         >
           <nav>
-            <ul>
+            <ul style={{ display: isActiveMenuMobilemenuMobile }}>
               <li>
                 {styleDashboard ? (
                   <Link className="isActive" to="/dashboard">

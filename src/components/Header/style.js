@@ -66,6 +66,14 @@ export const Container = styled.header`
     }
   }
 
+  .menu-mobile {
+    display: none;
+
+    nav {
+      display: none;
+    }
+  }
+
   .activeAdm {
   }
 
