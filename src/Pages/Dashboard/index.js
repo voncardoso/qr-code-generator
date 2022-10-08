@@ -67,6 +67,29 @@ export function Dashboard() {
     }
   }, [search]);
 
+  function usedTickets() {
+    let useed = 0;
+    data.map((item) => {
+      if (item.active === true) {
+        useed++;
+      }
+    });
+
+    return useed;
+  }
+
+  function notUsedTickets() {
+    let notUsed = 0;
+
+    data.map((item) => {
+      if (item.active === false) {
+        notUsed++;
+      }
+    });
+
+    return notUsed;
+  }
+
   return (
     <>
       <Header />
@@ -78,20 +101,20 @@ export function Dashboard() {
                 <span>Confirmados</span>
                 <CheckCircle size={25} color={"var(--green-300)"} />
               </div>
-              <strong>34</strong>
+              <strong>{usedTickets()}</strong>
             </li>
             <li>
               <div>
                 <span>Restantes</span>
                 <XCircle size={25} color={"var(--red-300)"} />
               </div>
-              <strong>34</strong>
+              <strong>{notUsedTickets()}</strong>
             </li>
             <li>
               <div>
                 <span>Total de Ingressos</span>
               </div>
-              <strong>34</strong>
+              <strong>{data.length}</strong>
             </li>
           </ul>
         </header>
@@ -123,7 +146,12 @@ export function Dashboard() {
                   return (
                     <tr>
                       <td>{item.count}</td>
-                      <td>{item.money}</td>
+                      <td>
+                        {Number(item.money).toLocaleString("pt-br", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
+                      </td>
                       <td>{item.type}</td>
                       <td>
                         {item.active ? (
@@ -153,7 +181,12 @@ export function Dashboard() {
                   return (
                     <tr>
                       <td>{item.count}</td>
-                      <td>{item.money}</td>
+                      <td>
+                        {Number(item.money).toLocaleString("pt-br", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
+                      </td>
                       <td>{item.type}</td>
                       <td>
                         {item.active ? (

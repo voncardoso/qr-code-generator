@@ -15,7 +15,9 @@ export const Container = styled.section`
       overflow-x: auto;
       li {
         max-width: 400px;
+        min-width: 300px;
         width: 100%;
+
         border-radius: 10px;
         padding: 20px 30px;
         background: var(--white);
@@ -227,11 +229,27 @@ export const Container = styled.section`
     }
   }
 
+  @media (max-width: 1184px) {
+    header {
+      ul {
+        gap: 30px;
+        li {
+          strong {
+            font-size: 1.5rem;
+          }
+        }
+      }
+    }
+  }
+
   @media (max-width: 823px) {
     padding: 0px 40px;
-    ul {
-      gap: 10px;
-      li {
+    header {
+      ul {
+        gap: 30px;
+        li {
+          width: 250px;
+        }
       }
     }
   }

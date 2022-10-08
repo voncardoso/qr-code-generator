@@ -32,8 +32,6 @@ export function Header() {
   if (pathname === "/dashboard") {
     console.log("teste");
   }
-
-  console.log(pathname);
   function Logout() {
     const auth = getAuth();
     signOut(auth)
@@ -49,6 +47,7 @@ export function Header() {
   return (
     <Container>
       <nav>
+        <h1></h1>
         {isActiveButtonMobile ? (
           <button
             className="button-menu-mobile"
@@ -76,8 +75,6 @@ export function Header() {
             <List size={32} color={"var(--blue-400)"} />
           </button>
         )}
-
-        <h1></h1>
 
         <div>
           {styleDashboard ? (

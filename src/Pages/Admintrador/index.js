@@ -143,6 +143,33 @@ export function Admistrador() {
     }
   }, [search]);
 
+  function valueTotal() {
+    let money = [];
+    data.map((item) => {
+      money.push(+item.money);
+    });
+    const total = money.reduce((acc, item) => {
+      return Number(acc) + item;
+    }, 0);
+
+    return total.toLocaleString("pt-br", {
+      style: "currency",
+      currency: "BRL",
+    });
+  }
+
+  function usedTickets() {
+    let useed = 0;
+
+    data.map((item) => {
+      if (item.active === true) {
+        useed++;
+      }
+    });
+
+    return useed;
+  }
+
   return (
     <>
       <Header />
@@ -154,20 +181,20 @@ export function Admistrador() {
                 <span>Vendidos</span>
                 <CheckCircle size={25} color={"var(--green-300)"} />
               </div>
-              <strong>200</strong>
+              <strong>{data.length}</strong>
             </li>
             <li>
               <div>
                 <span>Usados</span>
                 <Checks size={25} color={"var(--blue-300)"} />
               </div>
-              <strong>190</strong>
+              <strong>{usedTickets()}</strong>
             </li>
             <li>
               <div>
                 <span>Valor Total</span>
               </div>
-              <strong>R$ 16</strong>
+              <strong>{valueTotal()}</strong>
             </li>
           </ul>
         </header>
@@ -200,7 +227,12 @@ export function Admistrador() {
                   return (
                     <tr>
                       <td>{item.count}</td>
-                      <td>{item.money}</td>
+                      <td>
+                        {Number(item.money).toLocaleString("pt-br", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
+                      </td>
                       <td>{item.type}</td>
                       <td>
                         <ul>
@@ -235,7 +267,12 @@ export function Admistrador() {
                   return (
                     <tr>
                       <td>{item.count}</td>
-                      <td>{item.money}</td>
+                      <td>
+                        {Number(item.money).toLocaleString("pt-br", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}
+                      </td>
                       <td>{item.type}</td>
                       <td>
                         <ul>
