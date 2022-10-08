@@ -143,6 +143,20 @@ export function Admistrador() {
     }
   }, [search]);
 
+  function valueTotal() {
+    let money = [];
+    data.map((item) => {
+      money.push(+item.money);
+    });
+    const total = money.reduce((acc, item) => {
+      return Number(acc) + item;
+    }, 0);
+
+    return total.toLocaleString("pt-br", {
+      style: "currency",
+      currency: "BRL",
+    });
+  }
   return (
     <>
       <Header />
@@ -167,7 +181,7 @@ export function Admistrador() {
               <div>
                 <span>Valor Total</span>
               </div>
-              <strong>R$ 16</strong>
+              <strong>{valueTotal()}</strong>
             </li>
           </ul>
         </header>

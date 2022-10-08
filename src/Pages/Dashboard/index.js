@@ -78,7 +78,7 @@ export function Dashboard() {
                 <span>Confirmados</span>
                 <CheckCircle size={25} color={"var(--green-300)"} />
               </div>
-              <strong>34</strong>
+              <strong>300</strong>
             </li>
             <li>
               <div>
