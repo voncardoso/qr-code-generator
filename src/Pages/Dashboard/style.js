@@ -92,13 +92,13 @@ export const Container = styled.section`
         margin-bottom: 40px;
 
         td {
-          padding: 10px 10px;
           font-size: 1.125rem;
           background: var(--white);
           max-width: 200px;
           width: 25%;
-          padding: 10px 20px;
+          padding: 10px 30px;
           border-bottom: 5px solid var(--background);
+          height: 60px;
           button {
             background: var(--blue-400);
             padding: 10px 20px;
@@ -176,6 +176,58 @@ export const Container = styled.section`
     }
   }
 
+  .paginacao {
+    background: transparent;
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+
+      button {
+        display: flex;
+        align-items: center;
+        align-self: center;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        border: none;
+        border-radius: 50%;
+        position: relative;
+        margin: 0 auto;
+        padding: 4px 8px;
+        box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 25%);
+        color: var(--blue-400);
+      }
+      button:hover {
+        background: var(--blue-400);
+        color: #fff;
+      }
+
+      button:last-child {
+        background: transparent;
+      }
+
+      .Anterior {
+        padding: 0px;
+        align-self: center;
+        cursor: pointer;
+        font-size: 0.875rem;
+        background: transparent;
+        box-shadow: none;
+      }
+      .Anterior:hover {
+        background: transparent;
+        background: transparent;
+        color: var(--blue-400);
+      }
+    }
+  }
+
   @media (max-width: 823px) {
     padding: 0px 40px;
     header {
@@ -209,11 +261,128 @@ export const Container = styled.section`
   }
 
   @media (max-width: 517px) {
-    div {
-      display: block;
-    }
     table {
       display: none;
     }
+  }
+
+  @media (max-width: 425px) {
+    .inputHerader {
+      input {
+        max-width: 180px;
+        width: 100%;
+        margin-right: 20px;
+      }
+
+      a {
+        font-size: 13px;
+      }
+    }
+  }
+`;
+
+export const Mobali = styled.section`
+  margin: 0 auto;
+  width: 100%;
+  padding: 0px 40px;
+  display: none;
+  font-size: 1rem;
+  ul {
+    background: var(--white);
+    margin-bottom: 10px;
+    padding: 5px 0px 0px 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    text-align: center;
+    border-radius: 10px;
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0px 5px 0px;
+      color: var(--gray-200);
+      gap: 5px;
+
+      p {
+        color: var(--text);
+      }
+    }
+
+    li:last-child {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      grid-column: 1/4;
+
+      margin: 0px 0px;
+
+      button {
+        width: 100%;
+        background: var(--blue-400);
+        margin-top: 10px;
+        padding: 10px 20px;
+        color: var(--white);
+        font-weight: 600;
+        border: none;
+        border-radius: 5px;
+      }
+    }
+  }
+
+  .paginacaoMobile {
+    background: transparent;
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+
+      button {
+        display: flex;
+        align-items: center;
+        align-self: center;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        border: none;
+        border-radius: 50%;
+        position: relative;
+        margin: 0 auto;
+        padding: 4px 8px;
+        box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 25%);
+        color: var(--blue-400);
+      }
+      button:hover {
+        background: var(--blue-400);
+        color: #fff;
+      }
+
+      button:last-child {
+        background: transparent;
+      }
+
+      .Anterior {
+        padding: 0px;
+        align-self: center;
+        cursor: pointer;
+        font-size: 0.875rem;
+        background: transparent;
+        box-shadow: none;
+      }
+      .Anterior:hover {
+        background: transparent;
+        background: transparent;
+        color: var(--blue-400);
+      }
+    }
+  }
+
+  @media (max-width: 541px) {
+    display: block;
   }
 `;
