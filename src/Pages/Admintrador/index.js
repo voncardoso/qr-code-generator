@@ -9,7 +9,13 @@ import {
   CaretDoubleRight,
   CaretDoubleLeft,
 } from "phosphor-react";
-import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../Config/config";
 import { useContext, useEffect, useState } from "react";
 import QRCodeLink from "qrcode";
@@ -18,12 +24,21 @@ import { UserContext } from "../../Context/useContext";
 // qr-code
 import Modal from "react-modal";
 import ModalQrCode from "react-modal";
+import ModalUpdate from "react-modal";
 
 export function Admistrador() {
   const [money, setMoney] = useState("");
   const [type, setType] = useState("");
+  const [isActive, setIsActive] = useState(false);
+
+  const [moneyUpdate, setMoneyUpdate] = useState("");
+  const [typeUpdate, setTypeUpdate] = useState("");
+  const [isActiveUpdate, setIsActiveUpdate] = useState("");
+  const [itemId, setItemId] = useState("");
+
   const [isActiveModalQrCode, setIsActiveModalQrCode] = useState("");
   const [isActiveModal, setIsActiveModal] = useState(false);
+  const [isActiveModalUpdate, setIsActiveModalUpdate] = useState(false);
   const { data, setModify } = useContext(UserContext);
   const [numberQrCode, setNumberQrCode] = useState(0);
   const [img, setImg] = useState("");
@@ -35,6 +50,7 @@ export function Admistrador() {
   const [itensPerPage, setItensPerPage] = useState(10);
   // escolher qual pagina
   const [currentPage, setCurrentPerPage] = useState(0);
+  const [arry, setArry] = useState([]);
 
   let count1 = 0;
 
@@ -54,6 +70,15 @@ export function Admistrador() {
 
   function handleCloseModalQrCode() {
     setIsActiveModalQrCode(false);
+  }
+
+  function handleOpenModalUpdate() {
+    console.log("upadate");
+    setIsActiveModalUpdate(true);
+  }
+
+  function handleCloseModalUpdate() {
+    setIsActiveModalUpdate(false);
   }
 
   async function handleSubmitBatch(event) {
@@ -170,6 +195,24 @@ export function Admistrador() {
     return useed;
   }
 
+  async function UpdateInformation(item) {
+    setArry(item);
+    setMoneyUpdate(item.money);
+    setTypeUpdate(item.type);
+    setIsActiveUpdate(item.activ);
+    setItemId(item.id);
+  }
+  console.log("ite,Id", itemId);
+  async function Update(event) {
+    event.preventDefault();
+    const washingtonRef = doc(db, "tickets", itemId);
+    await updateDoc(washingtonRef, {
+      active: isActiveUpdate,
+      money: moneyUpdate,
+      type: typeUpdate,
+    });
+  }
+
   return (
     <>
       <Header />
@@ -238,19 +281,26 @@ export function Admistrador() {
                         <ul>
                           <li
                             onClick={() => {
-                              console.log("click", item.qrcode);
                               handleOpenModalQrCode(item.qrcode, item.count);
                             }}
                           >
                             <QrCode size={25} />
                           </li>
-                          <li>
+
+                          <li
+                            onClick={() => {
+                              console.log("click");
+                              handleOpenModalUpdate();
+                              UpdateInformation(item);
+                            }}
+                          >
                             <NotePencil
                               className="notePencil"
                               size={25}
                               color={"var(--green-300)"}
                             />
                           </li>
+
                           <li
                             onClick={() => {
                               deleteTicktes(item.id);
@@ -284,7 +334,13 @@ export function Admistrador() {
                           >
                             <QrCode size={25} />
                           </li>
-                          <li>
+                          <li
+                            onClick={() => {
+                              console.log("click");
+                              handleOpenModalUpdate();
+                              UpdateInformation(item);
+                            }}
+                          >
                             <NotePencil
                               className="notePencil"
                               size={25}
@@ -369,6 +425,7 @@ export function Admistrador() {
           </div>
         )}
       </Container>
+
       <Mobali>
         {search.length > 0
           ? filteredRoad.map((item) => {
@@ -506,6 +563,7 @@ export function Admistrador() {
           </div>
         )}
       </Mobali>
+
       <Modal
         isOpen={isActiveModal}
         onRequestClose={handleCloseModal}
@@ -563,6 +621,57 @@ export function Admistrador() {
           </a>
         </div>
       </ModalQrCode>
+
+      <ModalUpdate
+        isOpen={isActiveModalUpdate}
+        onRequestClose={handleCloseModalUpdate}
+        overlayClassName="react-modal-overlay"
+        className="react-modal-content"
+      >
+        <form onSubmit={Update}>
+          <h3>Atualizar ingresso</h3>
+          <label htmlFor="">Valor</label>
+          <input
+            required
+            type="text"
+            value={moneyUpdate}
+            onChange={(event) => setMoneyUpdate(event.target.value)}
+          />
+          <label className="nucleRegional" htmlFor="">
+            Tipo do ingresso
+            <select
+              name="uf"
+              id="uf"
+              required
+              value={typeUpdate}
+              onChange={(event) => setTypeUpdate(event.target.value)}
+            >
+              <option value="">Ingresso</option>
+              <option value="Pista">Pista</option>
+              <option value="Área Vip">Área Vip</option>
+              <option value="Camarote">Camarote</option>
+            </select>
+          </label>
+
+          <label className="nucleRegional" htmlFor="">
+            Status
+            <select
+              name="uf"
+              id="uf"
+              required
+              value={isActiveUpdate}
+              onChange={(event) => setIsActiveUpdate(event.target.value)}
+            >
+              <option value="">Status</option>
+              <option value="true">Confirmado</option>
+              <option value="false">Pendente</option>
+            </select>
+          </label>
+          <button type="" className="buttonAdd">
+            Cadastrar
+          </button>
+        </form>
+      </ModalUpdate>
     </>
   );
 }
