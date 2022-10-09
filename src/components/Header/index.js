@@ -14,6 +14,7 @@ export function Header() {
   const [isActiveMenuMobilemenuMobile, setIsActiveMenuMobile] =
     useState("none");
   const [isActiveButtonMobile, setIisActiveButtonMobile] = useState(false);
+  const [isActiveTitle, setIisActiveTitle] = useState(false);
 
   useEffect(() => {
     function routeStyle() {
@@ -75,7 +76,7 @@ export function Header() {
             <List size={32} color={"var(--blue-400)"} />
           </button>
         )}
-
+        {styleDashboard ? <h2>Dashboard</h2> : <h2>Administrador</h2>}
         <div>
           {styleDashboard ? (
             <Link className="isActive" to="/dashboard">

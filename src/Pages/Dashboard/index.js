@@ -3,10 +3,6 @@ import { Container, Mobali } from "./style";
 import {
   CheckCircle,
   XCircle,
-  Checks,
-  NotePencil,
-  Trash,
-  QrCode,
   CaretDoubleRight,
   CaretDoubleLeft,
 } from "phosphor-react";
@@ -24,6 +20,7 @@ export function Dashboard() {
   const [itensPerPage, setItensPerPage] = useState(10);
   // escolher qual pagina
   const [currentPage, setCurrentPerPage] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   if (data) {
     data.map((rodovia) => {
@@ -50,6 +47,7 @@ export function Dashboard() {
       });
 
       setModify(true);
+      setLoading(false);
       //  window.location.reload();
     } catch {
       console.log("erro");
@@ -177,7 +175,7 @@ export function Dashboard() {
                     </tr>
                   );
                 })
-              : currentItens.map((item) => {
+              : currentItens.map((item, index) => {
                   return (
                     <tr>
                       <td>{item.count}</td>
@@ -203,6 +201,7 @@ export function Dashboard() {
                           <button
                             onClick={() => {
                               verifyTickets(item.id);
+                              setLoading(true);
                             }}
                           >
                             Confirmar

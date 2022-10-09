@@ -107,6 +107,9 @@ export const Container = styled.section`
             border: none;
             border-radius: 5px;
           }
+          button:hover {
+            background: rgb(0, 61, 167, 40%);
+          }
         }
         td:last-child {
           border-bottom-right-radius: 10px;
