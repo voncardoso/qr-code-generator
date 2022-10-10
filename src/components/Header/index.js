@@ -35,14 +35,18 @@ export function Header() {
   }
   function Logout() {
     const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        window.localStorage.removeItem("login");
-        navigate("/");
-      })
-      .catch((error) => {
-        // An error happened.
-      });
+    let response = window.confirm("Certeza que deseja sair ?");
+
+    if (response === true) {
+      signOut(auth)
+        .then(() => {
+          window.localStorage.removeItem("login");
+          navigate("/");
+        })
+        .catch((error) => {
+          // An error happened.
+        });
+    }
   }
 
   return (

@@ -202,7 +202,7 @@ export function Admistrador() {
     setIsActiveUpdate(item.active);
     setItemId(item.id);
   }
-  console.log("ite,Id", itemId);
+
   async function Update(event) {
     event.preventDefault();
     let ativo = false;
@@ -317,7 +317,7 @@ export function Admistrador() {
                             <NotePencil
                               className="notePencil"
                               size={25}
-                              color={"var(--green-300)"}
+                              color={"var(--blue-400)"}
                             />
                           </li>
 
@@ -373,7 +373,7 @@ export function Admistrador() {
                             <NotePencil
                               className="notePencil"
                               size={25}
-                              color={"var(--green-300)"}
+                              color={"var(--blue-400)"}
                             />
                           </li>
                           <li
