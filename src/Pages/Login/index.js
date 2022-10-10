@@ -23,8 +23,6 @@ export function Login() {
         // Signed in
         const user = userCredential.user;
         if (user) {
-          console.log("usuario existe");
-
           window.localStorage.setItem("login", true);
           navigate("/dashboard");
           setLogin(false);
@@ -34,7 +32,6 @@ export function Login() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log("usuario não existe");
         setError(true);
         setLogin(false);
       });

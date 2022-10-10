@@ -48,7 +48,6 @@ export function QRcode1() {
   }, [dataQrcode]);
 
   async function verifyQrCode(id) {
-    console.log("foi-------------------");
     const washingtonRef = doc(db, "tickets", id);
     try {
       await updateDoc(washingtonRef, {
@@ -57,9 +56,7 @@ export function QRcode1() {
       setError("confirmado");
       setIsActiveQrCode("none");
       setConfirmQrCode("block");
-    } catch {
-      console.log("erro");
-    }
+    } catch {}
   }
 
   function ticketsExistes() {

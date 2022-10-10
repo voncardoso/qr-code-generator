@@ -28,7 +28,6 @@ export function Dashboard() {
     });
   }
 
-  console.log(data1.length);
   // verificar o numero de paginas
   const pages = Math.ceil(data1.length / itensPerPage);
   // fatia o array de itens
@@ -40,7 +39,6 @@ export function Dashboard() {
 
   async function verifyTickets(id) {
     const washingtonRef = doc(db, "tickets", id);
-    console.log("foi-------------------");
     try {
       await updateDoc(washingtonRef, {
         active: true,
@@ -49,9 +47,7 @@ export function Dashboard() {
       setModify(true);
       setLoading(false);
       //  window.location.reload();
-    } catch {
-      console.log("erro");
-    }
+    } catch {}
   }
 
   // filtro de pesdquisa

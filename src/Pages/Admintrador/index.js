@@ -73,7 +73,6 @@ export function Admistrador() {
   }
 
   function handleOpenModalUpdate() {
-    console.log("upadate");
     setIsActiveModalUpdate(true);
   }
 
@@ -83,7 +82,6 @@ export function Admistrador() {
 
   async function handleSubmitBatch(event) {
     event.preventDefault();
-    console.log("lote");
     if (data.length === 0) {
       count1 = 1;
     }
@@ -97,7 +95,6 @@ export function Admistrador() {
       if (i > 1) {
         count1 = count1 + 1;
       }
-      console.log(count1);
       let countString = count1.toString();
 
       QRCodeLink.toDataURL(
@@ -120,11 +117,9 @@ export function Admistrador() {
           qrcode: imgQrCode,
         });
 
-        console.log("Document written with ID: ", docRef.id);
         setModify(true);
         setMoney("");
         setType("");
-        console.log("lote1");
       } catch (e) {
         console.error("Error adding document: ", e);
       }
@@ -146,7 +141,6 @@ export function Admistrador() {
     });
   }
 
-  console.log(data1.length);
   // verificar o numero de paginas
   const pages = Math.ceil(data1.length / itensPerPage);
   // fatia o array de itens
@@ -155,7 +149,6 @@ export function Admistrador() {
 
   // fatia o inicio ao final
   const currentItens = data1.slice(startIndex, endIndex);
-  console.log("cur", currentItens);
 
   // filtro de pesdquisa
   useEffect(() => {
@@ -309,7 +302,6 @@ export function Admistrador() {
 
                           <li
                             onClick={() => {
-                              console.log("click");
                               handleOpenModalUpdate();
                               UpdateInformation(item);
                             }}
@@ -357,7 +349,6 @@ export function Admistrador() {
                         <ul>
                           <li
                             onClick={() => {
-                              console.log("click", item.qrcode);
                               handleOpenModalQrCode(item.qrcode, item.count);
                             }}
                           >
@@ -365,7 +356,6 @@ export function Admistrador() {
                           </li>
                           <li
                             onClick={() => {
-                              console.log("click");
                               handleOpenModalUpdate();
                               UpdateInformation(item);
                             }}
@@ -487,14 +477,12 @@ export function Admistrador() {
                     <QrCode
                       size={25}
                       onClick={() => {
-                        console.log("click", item.qrcode);
                         handleOpenModalQrCode(item.qrcode, item.count);
                       }}
                     />
 
                     <NotePencil
                       onClick={() => {
-                        console.log("click");
                         handleOpenModalUpdate();
                         UpdateInformation(item);
                       }}
@@ -544,14 +532,12 @@ export function Admistrador() {
                       size={25}
                       color={"#000"}
                       onClick={() => {
-                        console.log("click", item.qrcode);
                         handleOpenModalQrCode(item.qrcode, item.count);
                       }}
                     />
 
                     <NotePencil
                       onClick={() => {
-                        console.log("click");
                         handleOpenModalUpdate();
                         UpdateInformation(item);
                       }}

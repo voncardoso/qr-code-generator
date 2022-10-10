@@ -20,15 +20,12 @@ export function Header() {
   useEffect(() => {
     function routeStyle() {
       if (pathname === "/administrador") {
-        console.log("foi");
         setStyleAdministrador(true);
       }
       if (pathname === "/dashboard") {
-        console.log("foi dashboar");
         setStyleDashboard(true);
       }
       if (pathname === "/user") {
-        console.log("foi user");
         setStyleUser(true);
       }
     }
