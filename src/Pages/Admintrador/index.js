@@ -33,7 +33,7 @@ export function Admistrador() {
 
   const [moneyUpdate, setMoneyUpdate] = useState("");
   const [typeUpdate, setTypeUpdate] = useState("");
-  const [isActiveUpdate, setIsActiveUpdate] = useState("");
+  const [isActiveUpdate, setIsActiveUpdate] = useState(false);
   const [itemId, setItemId] = useState("");
 
   const [isActiveModalQrCode, setIsActiveModalQrCode] = useState("");
@@ -199,19 +199,28 @@ export function Admistrador() {
     setArry(item);
     setMoneyUpdate(item.money);
     setTypeUpdate(item.type);
-    setIsActiveUpdate(item.activ);
+    setIsActiveUpdate(item.active);
     setItemId(item.id);
   }
   console.log("ite,Id", itemId);
   async function Update(event) {
     event.preventDefault();
+    let ativo = false;
+
+    if (isActiveUpdate === "true") {
+      ativo = true;
+    } else {
+      ativo = false;
+    }
     const washingtonRef = doc(db, "tickets", itemId);
+
     await updateDoc(washingtonRef, {
-      active: Boolean(isActiveUpdate),
+      active: ativo,
       money: moneyUpdate,
       type: typeUpdate,
     });
     setModify(true);
+    handleCloseModalUpdate();
   }
 
   return (
@@ -279,7 +288,15 @@ export function Admistrador() {
                         })}
                       </td>
                       <td>{item.type}</td>
-                      <td>{item.active ? "Confirmado" : "Pendente"}</td>
+                      <td>
+                        {item.active ? (
+                          <p style={{ color: "var(--green-300)" }}>
+                            Confirmado
+                          </p>
+                        ) : (
+                          <p style={{ color: "#F5C61C" }}>Pendente</p>
+                        )}
+                      </td>
                       <td>
                         <ul>
                           <li
@@ -327,7 +344,15 @@ export function Admistrador() {
                         })}
                       </td>
                       <td>{item.type}</td>
-                      <td>{item.active ? "Confirmado" : "Pendente"}</td>
+                      <td>
+                        {item.active ? (
+                          <p style={{ color: "var(--green-300)" }}>
+                            Confirmado
+                          </p>
+                        ) : (
+                          <p style={{ color: "#F5C61C" }}>Pendente</p>
+                        )}
+                      </td>
                       <td>
                         <ul>
                           <li
@@ -435,14 +460,29 @@ export function Admistrador() {
           ? filteredRoad.map((item) => {
               return (
                 <ul>
-                  <li>Ingresso: {item.count}</li>
                   <li>
-                    {Number(item.money).toLocaleString("pt-br", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
+                    {" "}
+                    Nº: <p>{item.count}</p>
                   </li>
-                  <li>{item.type}</li>
+                  <li>
+                    Valor:{" "}
+                    <p>
+                      {Number(item.money).toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
+                  </li>
+                  <li>
+                    Tipo: <p>{item.type}</p>
+                  </li>
+                  <li className="ststusLi">
+                    {item.active ? (
+                      <p style={{ color: "var(--green-300)" }}>Confirmado</p>
+                    ) : (
+                      <p style={{ color: "#F5C61C" }}>Pendente</p>
+                    )}
+                  </li>
                   <li>
                     <QrCode
                       size={25}
@@ -453,9 +493,14 @@ export function Admistrador() {
                     />
 
                     <NotePencil
+                      onClick={() => {
+                        console.log("click");
+                        handleOpenModalUpdate();
+                        UpdateInformation(item);
+                      }}
                       className="notePencil"
                       size={25}
-                      color={"var(--green-300)"}
+                      color={"var(--blue-300)"}
                     />
 
                     <Trash
@@ -487,6 +532,13 @@ export function Admistrador() {
                   <li>
                     Tipo: <p>{item.type}</p>
                   </li>
+                  <li className="ststusLi">
+                    {item.active ? (
+                      <p style={{ color: "var(--green-300)" }}>Confirmado</p>
+                    ) : (
+                      <p style={{ color: "#F5C61C" }}>Pendente</p>
+                    )}
+                  </li>
                   <li>
                     <QrCode
                       size={25}
@@ -498,9 +550,14 @@ export function Admistrador() {
                     />
 
                     <NotePencil
+                      onClick={() => {
+                        console.log("click");
+                        handleOpenModalUpdate();
+                        UpdateInformation(item);
+                      }}
                       className="notePencil"
                       size={25}
-                      color={"var(--green-300)"}
+                      color={"var(--blue-300)"}
                     />
 
                     <Trash
@@ -514,6 +571,8 @@ export function Admistrador() {
                 </ul>
               );
             })}
+
+        {/**paginaçao */}
         {search > 0 ? (
           ""
         ) : (
@@ -673,13 +732,13 @@ export function Admistrador() {
             <select
               name="uf"
               id="uf"
-              required
+              type="bolean"
               value={isActiveUpdate}
               onChange={(event) => setIsActiveUpdate(event.target.value)}
             >
               <option value="">Status</option>
-              <option value="true">Confirmado</option>
-              <option value="false">Pendente</option>
+              <option value={true}>Confirmado</option>
+              <option value={false}>Pendente</option>
             </select>
           </label>
           <button type="" className="buttonAdd">

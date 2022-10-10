@@ -123,6 +123,12 @@ export const Container = styled.section`
           border-bottom-right-radius: 10px;
           border-top-right-radius: 10px;
           text-align: center;
+
+          ul {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+          }
         }
 
         td:first-child {
@@ -357,6 +363,12 @@ export const Mobali = styled.section`
       p {
         color: var(--text);
       }
+    }
+
+    .ststusLi {
+      grid-column: 1/4;
+      text-align: justify;
+      align-items: start;
     }
 
     li:last-child {
