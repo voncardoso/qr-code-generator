@@ -10,9 +10,10 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Context/useContext";
 import { db } from "../../Config/config";
 import { doc, updateDoc } from "firebase/firestore";
+import { LoadingAnimacao } from "../../components/Loadign/loading";
 
 export function Dashboard() {
-  const { data, setModify } = useContext(UserContext);
+  const { data, setModify, loadingAnimaçao } = useContext(UserContext);
   const [search, setSearch] = useState("");
   const [filteredRoad, setFilteredRoad] = useState([]);
   let data1 = [];
@@ -86,73 +87,224 @@ export function Dashboard() {
 
   return (
     <>
-      <Header />
-      <Container>
-        <header>
-          <ul>
-            <li>
-              <div>
-                <span>Confirmados</span>
-                <CheckCircle size={25} color={"var(--green-300)"} />
+      {loadingAnimaçao ? (
+        <LoadingAnimacao />
+      ) : (
+        <>
+          <Header />
+          <Container>
+            <header>
+              <ul>
+                <li>
+                  <div>
+                    <span>Confirmados</span>
+                    <CheckCircle size={25} color={"var(--green-300)"} />
+                  </div>
+                  <strong>{usedTickets()}</strong>
+                </li>
+                <li>
+                  <div>
+                    <span>Restantes</span>
+                    <XCircle size={25} color={"var(--red-300)"} />
+                  </div>
+                  <strong>{notUsedTickets()}</strong>
+                </li>
+                <li>
+                  <div>
+                    <span>Total de Ingressos</span>
+                  </div>
+                  <strong>{data.length}</strong>
+                </li>
+              </ul>
+            </header>
+
+            <span className="inputHerader">
+              <input
+                type="search"
+                placeholder="Buscar Ingresso"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
+
+              <a href="/qrcode">Qr-code</a>
+            </span>
+
+            <table>
+              <thead>
+                <tr>
+                  <th className="primeryTD">Nº </th>
+                  <th>Valor</th>
+                  <th>Tipo</th>
+                  <th className="acoes">Ações</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {search.length > 0
+                  ? filteredRoad.map((item) => {
+                      return (
+                        <tr>
+                          <td>{item.count}</td>
+                          <td>
+                            {Number(item.money).toLocaleString("pt-br", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
+                          </td>
+                          <td>{item.type}</td>
+                          <td>
+                            {item.active ? (
+                              <button
+                                style={{
+                                  background: "transparent",
+                                  color: "#78BAAE",
+                                  fontSize: "1rem",
+                                }}
+                              >
+                                Verificado
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => {
+                                  verifyTickets(item.id);
+                                }}
+                              >
+                                Confirmar
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  : currentItens.map((item, index) => {
+                      return (
+                        <tr>
+                          <td>{item.count}</td>
+                          <td>
+                            {Number(item.money).toLocaleString("pt-br", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
+                          </td>
+                          <td>{item.type}</td>
+                          <td>
+                            {item.active ? (
+                              <button
+                                style={{
+                                  background: "transparent",
+                                  color: "#78BAAE",
+                                  fontSize: "1rem",
+                                }}
+                              >
+                                Verificado
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => {
+                                  verifyTickets(item.id);
+                                  setLoading(true);
+                                }}
+                              >
+                                Confirmar
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+              </tbody>
+            </table>
+
+            {search > 0 ? (
+              ""
+            ) : (
+              <div className="paginacao">
+                <span>
+                  {currentPage == 0 ? (
+                    <button
+                      disabled
+                      className="Anterior"
+                      style={{
+                        background: "transparent",
+                        boxShadow: "none",
+                      }}
+                    >
+                      <CaretDoubleLeft color=" #9baebf" size={18} />
+                    </button>
+                  ) : (
+                    <button
+                      className="Anterior"
+                      onClick={() => {
+                        setCurrentPerPage(currentPage - 1);
+                      }}
+                    >
+                      <CaretDoubleLeft size={18} />
+                    </button>
+                  )}
+
+                  {Array.from(Array(pages), (item, index) => {
+                    return (
+                      <button
+                        style={
+                          index == currentPage
+                            ? {
+                                background: "var(--blue-400)",
+                                color: "var(--white)",
+                              }
+                            : null
+                        }
+                        className="paginationButton"
+                        value={index}
+                        onClick={(e) => setCurrentPerPage(e.target.value)}
+                      >
+                        {index + 1}
+                      </button>
+                    );
+                  })}
+                  {currentPage == pages - 1 ? (
+                    <button disabled className="Anterior">
+                      <CaretDoubleRight color=" #9baebf" size={18} />
+                    </button>
+                  ) : (
+                    <button
+                      className="Anterior"
+                      onClick={() => {
+                        setCurrentPerPage(currentPage + 1);
+                      }}
+                    >
+                      <CaretDoubleRight size={18} />
+                    </button>
+                  )}
+                </span>
               </div>
-              <strong>{usedTickets()}</strong>
-            </li>
-            <li>
-              <div>
-                <span>Restantes</span>
-                <XCircle size={25} color={"var(--red-300)"} />
-              </div>
-              <strong>{notUsedTickets()}</strong>
-            </li>
-            <li>
-              <div>
-                <span>Total de Ingressos</span>
-              </div>
-              <strong>{data.length}</strong>
-            </li>
-          </ul>
-        </header>
-
-        <span className="inputHerader">
-          <input
-            type="search"
-            placeholder="Buscar Ingresso"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-          />
-
-          <a href="/qrcode">Qr-code</a>
-        </span>
-
-        <table>
-          <thead>
-            <tr>
-              <th className="primeryTD">Nº </th>
-              <th>Valor</th>
-              <th>Tipo</th>
-              <th className="acoes">Ações</th>
-            </tr>
-          </thead>
-
-          <tbody>
+            )}
+          </Container>
+          <Mobali>
             {search.length > 0
               ? filteredRoad.map((item) => {
                   return (
-                    <tr>
-                      <td>{item.count}</td>
-                      <td>
-                        {Number(item.money).toLocaleString("pt-br", {
-                          style: "currency",
-                          currency: "BRL",
-                        })}
-                      </td>
-                      <td>{item.type}</td>
-                      <td>
+                    <ul>
+                      <li>
+                        Nº: <p>{item.count}</p>
+                      </li>
+                      <li>
+                        Valor:{" "}
+                        <p>
+                          {Number(item.money).toLocaleString("pt-br", {
+                            style: "currency",
+                            currency: "BRL",
+                          })}
+                        </p>
+                      </li>
+                      <li>
+                        Tipo: <p>{item.type}</p>
+                      </li>
+                      <li>
                         {item.active ? (
                           <button
                             style={{
-                              background: "transparent",
-                              color: "#78BAAE",
+                              background: "#78BAAE",
+                              color: "#fff",
                               fontSize: "1rem",
                             }}
                           >
@@ -167,27 +319,34 @@ export function Dashboard() {
                             Confirmar
                           </button>
                         )}
-                      </td>
-                    </tr>
+                      </li>
+                    </ul>
                   );
                 })
-              : currentItens.map((item, index) => {
+              : currentItens.map((item) => {
                   return (
-                    <tr>
-                      <td>{item.count}</td>
-                      <td>
-                        {Number(item.money).toLocaleString("pt-br", {
-                          style: "currency",
-                          currency: "BRL",
-                        })}
-                      </td>
-                      <td>{item.type}</td>
-                      <td>
+                    <ul>
+                      <li>
+                        Nº: <p>{item.count}</p>
+                      </li>
+                      <li>
+                        Valor:{" "}
+                        <p>
+                          {Number(item.money).toLocaleString("pt-br", {
+                            style: "currency",
+                            currency: "BRL",
+                          })}
+                        </p>
+                      </li>
+                      <li>
+                        Tipo: <p>{item.type}</p>
+                      </li>
+                      <li>
                         {item.active ? (
                           <button
                             style={{
-                              background: "transparent",
-                              color: "#78BAAE",
+                              background: "#78BAAE",
+                              color: "#fff",
                               fontSize: "1rem",
                             }}
                           >
@@ -197,233 +356,81 @@ export function Dashboard() {
                           <button
                             onClick={() => {
                               verifyTickets(item.id);
-                              setLoading(true);
                             }}
                           >
                             Confirmar
                           </button>
                         )}
-                      </td>
-                    </tr>
+                      </li>
+                    </ul>
                   );
                 })}
-          </tbody>
-        </table>
+            {search > 0 ? (
+              ""
+            ) : (
+              <div className="paginacaoMobile">
+                <span>
+                  {currentPage == 0 ? (
+                    <button
+                      disabled
+                      className="Anterior"
+                      style={{
+                        background: "transparent",
+                        boxShadow: "none",
+                      }}
+                    >
+                      <CaretDoubleLeft color=" #9baebf" size={18} />
+                    </button>
+                  ) : (
+                    <button
+                      className="Anterior"
+                      onClick={() => {
+                        setCurrentPerPage(currentPage - 1);
+                      }}
+                    >
+                      <CaretDoubleLeft size={18} />
+                    </button>
+                  )}
 
-        {search > 0 ? (
-          ""
-        ) : (
-          <div className="paginacao">
-            <span>
-              {currentPage == 0 ? (
-                <button
-                  disabled
-                  className="Anterior"
-                  style={{
-                    background: "transparent",
-                    boxShadow: "none",
-                  }}
-                >
-                  <CaretDoubleLeft color=" #9baebf" size={18} />
-                </button>
-              ) : (
-                <button
-                  className="Anterior"
-                  onClick={() => {
-                    setCurrentPerPage(currentPage - 1);
-                  }}
-                >
-                  <CaretDoubleLeft size={18} />
-                </button>
-              )}
-
-              {Array.from(Array(pages), (item, index) => {
-                return (
-                  <button
-                    style={
-                      index == currentPage
-                        ? {
-                            background: "var(--blue-400)",
-                            color: "var(--white)",
-                          }
-                        : null
-                    }
-                    className="paginationButton"
-                    value={index}
-                    onClick={(e) => setCurrentPerPage(e.target.value)}
-                  >
-                    {index + 1}
-                  </button>
-                );
-              })}
-              {currentPage == pages - 1 ? (
-                <button disabled className="Anterior">
-                  <CaretDoubleRight color=" #9baebf" size={18} />
-                </button>
-              ) : (
-                <button
-                  className="Anterior"
-                  onClick={() => {
-                    setCurrentPerPage(currentPage + 1);
-                  }}
-                >
-                  <CaretDoubleRight size={18} />
-                </button>
-              )}
-            </span>
-          </div>
-        )}
-      </Container>
-      <Mobali>
-        {search.length > 0
-          ? filteredRoad.map((item) => {
-              return (
-                <ul>
-                  <li>
-                    Nº: <p>{item.count}</p>
-                  </li>
-                  <li>
-                    Valor:{" "}
-                    <p>
-                      {Number(item.money).toLocaleString("pt-br", {
-                        style: "currency",
-                        currency: "BRL",
-                      })}
-                    </p>
-                  </li>
-                  <li>
-                    Tipo: <p>{item.type}</p>
-                  </li>
-                  <li>
-                    {item.active ? (
+                  {Array.from(Array(pages), (item, index) => {
+                    return (
                       <button
-                        style={{
-                          background: "#78BAAE",
-                          color: "#fff",
-                          fontSize: "1rem",
-                        }}
+                        style={
+                          index == currentPage
+                            ? {
+                                background: "var(--blue-400)",
+                                color: "var(--white)",
+                              }
+                            : null
+                        }
+                        className="paginationButton"
+                        value={index}
+                        onClick={(e) => setCurrentPerPage(e.target.value)}
                       >
-                        Verificado
+                        {index + 1}
                       </button>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          verifyTickets(item.id);
-                        }}
-                      >
-                        Confirmar
-                      </button>
-                    )}
-                  </li>
-                </ul>
-              );
-            })
-          : currentItens.map((item) => {
-              return (
-                <ul>
-                  <li>
-                    Nº: <p>{item.count}</p>
-                  </li>
-                  <li>
-                    Valor:{" "}
-                    <p>
-                      {Number(item.money).toLocaleString("pt-br", {
-                        style: "currency",
-                        currency: "BRL",
-                      })}
-                    </p>
-                  </li>
-                  <li>
-                    Tipo: <p>{item.type}</p>
-                  </li>
-                  <li>
-                    {item.active ? (
-                      <button
-                        style={{
-                          background: "#78BAAE",
-                          color: "#fff",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        Verificado
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          verifyTickets(item.id);
-                        }}
-                      >
-                        Confirmar
-                      </button>
-                    )}
-                  </li>
-                </ul>
-              );
-            })}
-        {search > 0 ? (
-          ""
-        ) : (
-          <div className="paginacaoMobile">
-            <span>
-              {currentPage == 0 ? (
-                <button
-                  disabled
-                  className="Anterior"
-                  style={{
-                    background: "transparent",
-                    boxShadow: "none",
-                  }}
-                >
-                  <CaretDoubleLeft color=" #9baebf" size={18} />
-                </button>
-              ) : (
-                <button
-                  className="Anterior"
-                  onClick={() => {
-                    setCurrentPerPage(currentPage - 1);
-                  }}
-                >
-                  <CaretDoubleLeft size={18} />
-                </button>
-              )}
-
-              {Array.from(Array(pages), (item, index) => {
-                return (
-                  <button
-                    style={
-                      index == currentPage
-                        ? {
-                            background: "var(--blue-400)",
-                            color: "var(--white)",
-                          }
-                        : null
-                    }
-                    className="paginationButton"
-                    value={index}
-                    onClick={(e) => setCurrentPerPage(e.target.value)}
-                  >
-                    {index + 1}
-                  </button>
-                );
-              })}
-              {currentPage == pages - 1 ? (
-                <button disabled className="Anterior">
-                  <CaretDoubleRight color=" #9baebf" size={18} />
-                </button>
-              ) : (
-                <button
-                  className="Anterior"
-                  onClick={() => {
-                    setCurrentPerPage(currentPage + 1);
-                  }}
-                >
-                  <CaretDoubleRight size={18} />
-                </button>
-              )}
-            </span>
-          </div>
-        )}
-      </Mobali>
+                    );
+                  })}
+                  {currentPage == pages - 1 ? (
+                    <button disabled className="Anterior">
+                      <CaretDoubleRight color=" #9baebf" size={18} />
+                    </button>
+                  ) : (
+                    <button
+                      className="Anterior"
+                      onClick={() => {
+                        setCurrentPerPage(currentPage + 1);
+                      }}
+                    >
+                      <CaretDoubleRight size={18} />
+                    </button>
+                  )}
+                </span>
+              </div>
+            )}
+          </Mobali>
+        </>
+      )}
     </>
   );
 }

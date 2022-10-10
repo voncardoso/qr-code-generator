@@ -86,15 +86,14 @@ export function QRcode1() {
           }}
           style={{ width: "100%" }}
         />
-        {dataQrcode}
       </div>
 
       <div className="confirm" style={{ display: confirmQrCode }}>
-        <CheckCircle size={80} />
+        <CheckCircle color={errorStyle} size={80} />
         <h3 style={{ color: errorStyle }}>Nº {dataQrcode}</h3>
         <h3 style={{ color: errorStyle }}>{error}</h3>
         <button
-          style={{ color: errorStyle }}
+          style={{ background: errorStyle, color: "#fff" }}
           onClick={() => {
             window.location.reload();
           }}

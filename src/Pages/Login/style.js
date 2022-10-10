@@ -43,12 +43,21 @@ export const Container = styled.section`
         border-radius: 10px;
         border: transparent;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        padding: 20px 5px;
+        padding: 20px 10px;
       }
 
       input:focus {
         outline-color: var(--blue-100);
         background-color: var(--white);
+      }
+
+      .iconViewPasswor {
+        z-index: 2;
+        position: relative;
+        left: 90%;
+        top: -32px;
+        cursor: pointer;
+        color: var(--gray-300);
       }
     }
 
