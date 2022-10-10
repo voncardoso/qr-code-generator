@@ -12,6 +12,7 @@ export function QRcode1() {
   const [isActiveQrCode, setIsActiveQrCode] = useState("block");
   const [confirmQrCode, setConfirmQrCode] = useState("none");
   const [error, setError] = useState("none");
+  const [errorStyle, setErrorStyle] = useState("");
 
   useEffect(() => {
     function VerifyNull() {
@@ -42,6 +43,7 @@ export function QRcode1() {
       setIsActiveQrCode("none");
       setConfirmQrCode("block");
       setError("igresso não existe");
+      setErrorStyle("#FF4926");
     }
 
     VerifyNull();
@@ -54,6 +56,7 @@ export function QRcode1() {
         active: true,
       });
       setError("confirmado");
+      setErrorStyle("#2DDFBF");
       setIsActiveQrCode("none");
       setConfirmQrCode("block");
     } catch {}
@@ -63,6 +66,7 @@ export function QRcode1() {
     setIsActiveQrCode("none");
     setConfirmQrCode("block");
     setError("igresso ja foi confirmado");
+    setErrorStyle(" #F5C61C");
   }
 
   //  constraints={{ facingMode: "environment" }}
@@ -87,9 +91,10 @@ export function QRcode1() {
 
       <div className="confirm" style={{ display: confirmQrCode }}>
         <CheckCircle size={80} />
-        <h3>Nº {dataQrcode}</h3>
-        <h3>{error}</h3>
+        <h3 style={{ color: errorStyle }}>Nº {dataQrcode}</h3>
+        <h3 style={{ color: errorStyle }}>{error}</h3>
         <button
+          style={{ color: errorStyle }}
           onClick={() => {
             window.location.reload();
           }}
