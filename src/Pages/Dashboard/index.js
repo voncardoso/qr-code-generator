@@ -283,15 +283,27 @@ export function Dashboard() {
           ? filteredRoad.map((item) => {
               return (
                 <ul>
-                  <li>Ingresso: {item.count}</li>
-                  <li>{item.money}</li>
-                  <li>{item.type}</li>
+                  <li>
+                    Nº: <p>{item.count}</p>
+                  </li>
+                  <li>
+                    Valor:{" "}
+                    <p>
+                      {Number(item.money).toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
+                  </li>
+                  <li>
+                    Tipo: <p>{item.type}</p>
+                  </li>
                   <li>
                     {item.active ? (
                       <button
                         style={{
-                          background: "transparent",
-                          color: "#78BAAE",
+                          background: "#78BAAE",
+                          color: "#fff",
                           fontSize: "1rem",
                         }}
                       >
@@ -317,7 +329,13 @@ export function Dashboard() {
                     Nº: <p>{item.count}</p>
                   </li>
                   <li>
-                    Valor: <p>{item.money}</p>
+                    Valor:{" "}
+                    <p>
+                      {Number(item.money).toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
                   </li>
                   <li>
                     Tipo: <p>{item.type}</p>

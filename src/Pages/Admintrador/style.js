@@ -264,8 +264,27 @@ export const Container = styled.section`
     }
   }
 
+  @media (max-width: 728px) {
+    padding: 0px 20px;
+    table {
+      width: 80vw;
+    }
+  }
+
+  @media (max-width: 600px) {
+    table {
+      display: none;
+    }
+  }
+
   @media (max-width: 556px) {
-    padding: 0px 40px;
+    padding: 0px 0px;
+    header {
+      padding: 0px 0px;
+    }
+    .inputHerader {
+      padding: 0 0px;
+    }
     table {
       th {
         font-size: 1rem;
@@ -286,7 +305,7 @@ export const Container = styled.section`
   }
 
   @media (max-width: 540px) {
-    padding: 0px 40px;
+    padding: 0px 20px;
     table {
       display: none;
     }
@@ -315,7 +334,7 @@ export const Container = styled.section`
 export const Mobali = styled.section`
   margin: 0 auto;
   width: 100%;
-  padding: 0px 40px;
+  padding: 0px 20px;
   display: none;
   font-size: 1rem;
   ul {
@@ -323,7 +342,7 @@ export const Mobali = styled.section`
     margin-bottom: 10px;
     padding: 5px 10px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 0.5fr 1fr 1fr;
     justify-content: center;
     text-align: center;
     border-radius: 10px;
@@ -402,7 +421,7 @@ export const Mobali = styled.section`
     }
   }
 
-  @media (max-width: 541px) {
+  @media (max-width: 600px) {
     display: block;
   }
 `;

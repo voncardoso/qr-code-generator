@@ -207,10 +207,11 @@ export function Admistrador() {
     event.preventDefault();
     const washingtonRef = doc(db, "tickets", itemId);
     await updateDoc(washingtonRef, {
-      active: isActiveUpdate,
+      active: Boolean(isActiveUpdate),
       money: moneyUpdate,
       type: typeUpdate,
     });
+    setModify(true);
   }
 
   return (
@@ -260,6 +261,7 @@ export function Admistrador() {
               <th className="primeryTD">Nº </th>
               <th>Valor</th>
               <th>Tipo</th>
+              <th>Status</th>
               <th className="acoes">Ações</th>
             </tr>
           </thead>
@@ -277,6 +279,7 @@ export function Admistrador() {
                         })}
                       </td>
                       <td>{item.type}</td>
+                      <td>{item.active ? "Confirmado" : "Pendente"}</td>
                       <td>
                         <ul>
                           <li
@@ -324,6 +327,7 @@ export function Admistrador() {
                         })}
                       </td>
                       <td>{item.type}</td>
+                      <td>{item.active ? "Confirmado" : "Pendente"}</td>
                       <td>
                         <ul>
                           <li
@@ -432,7 +436,12 @@ export function Admistrador() {
               return (
                 <ul>
                   <li>Ingresso: {item.count}</li>
-                  <li>{item.money}</li>
+                  <li>
+                    {Number(item.money).toLocaleString("pt-br", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </li>
                   <li>{item.type}</li>
                   <li>
                     <QrCode
@@ -467,7 +476,13 @@ export function Admistrador() {
                     Nº: <p>{item.count}</p>
                   </li>
                   <li>
-                    Valor: <p>{item.money}</p>
+                    Valor:{" "}
+                    <p>
+                      {Number(item.money).toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
                   </li>
                   <li>
                     Tipo: <p>{item.type}</p>

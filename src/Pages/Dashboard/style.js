@@ -242,6 +242,12 @@ export const Container = styled.section`
     }
   }
 
+  @media (max-width: 600px) {
+    table {
+      display: none;
+    }
+  }
+
   @media (max-width: 556px) {
     padding: 0px 40px;
     table {
@@ -263,6 +269,13 @@ export const Container = styled.section`
     }
   }
 
+  @media (max-width: 540px) {
+    padding: 0px 20px;
+    table {
+      display: none;
+    }
+  }
+
   @media (max-width: 517px) {
     table {
       display: none;
@@ -270,6 +283,7 @@ export const Container = styled.section`
   }
 
   @media (max-width: 425px) {
+    padding: 0px 20px;
     .inputHerader {
       input {
         max-width: 180px;
@@ -287,7 +301,7 @@ export const Container = styled.section`
 export const Mobali = styled.section`
   margin: 0 auto;
   width: 100%;
-  padding: 0px 40px;
+  padding: 0px 20px;
   display: none;
   font-size: 1rem;
   ul {
@@ -295,15 +309,17 @@ export const Mobali = styled.section`
     margin-bottom: 10px;
     padding: 5px 0px 0px 0px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 0.5fr 1fr 1fr;
+    flex-wrap: wrap;
     justify-content: center;
     text-align: center;
     border-radius: 10px;
+    grid-auto-flow: row;
     li {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px 0px 5px 0px;
+      padding: 20px 10px 5px 10px;
       color: var(--gray-200);
       gap: 5px;
 
@@ -317,7 +333,6 @@ export const Mobali = styled.section`
       justify-content: space-between;
       align-items: center;
       grid-column: 1/4;
-
       margin: 0px 0px;
 
       button {
@@ -385,7 +400,7 @@ export const Mobali = styled.section`
     }
   }
 
-  @media (max-width: 541px) {
+  @media (max-width: 600px) {
     display: block;
   }
 `;
