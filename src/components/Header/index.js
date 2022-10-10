@@ -11,37 +11,41 @@ export function Header() {
   const { pathname } = useLocation();
   const [styleAdministrador, setStyleAdministrador] = useState(false);
   const [styleDashboard, setStyleDashboard] = useState(false);
+  const [styleUser, setStyleUser] = useState(false);
   const [isActiveMenuMobilemenuMobile, setIsActiveMenuMobile] =
     useState("none");
   const [isActiveButtonMobile, setIisActiveButtonMobile] = useState(false);
+  const [isActiveTitle, setIisActiveTitle] = useState(false);
 
   useEffect(() => {
     function routeStyle() {
       if (pathname === "/administrador") {
-        console.log("foi");
         setStyleAdministrador(true);
       }
       if (pathname === "/dashboard") {
-        console.log("foi dashboar");
         setStyleDashboard(true);
+      }
+      if (pathname === "/user") {
+        setStyleUser(true);
       }
     }
     routeStyle();
   }, [pathname]);
 
-  if (pathname === "/dashboard") {
-    console.log("teste");
-  }
   function Logout() {
     const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        window.localStorage.removeItem("login");
-        navigate("/");
-      })
-      .catch((error) => {
-        // An error happened.
-      });
+    let response = window.confirm("Certeza que deseja sair ?");
+
+    if (response === true) {
+      signOut(auth)
+        .then(() => {
+          window.localStorage.removeItem("login");
+          navigate("/");
+        })
+        .catch((error) => {
+          // An error happened.
+        });
+    }
   }
 
   return (
@@ -75,7 +79,7 @@ export function Header() {
             <List size={32} color={"var(--blue-400)"} />
           </button>
         )}
-
+        {styleDashboard ? <h2>Dashboard</h2> : <h2>Administrador</h2>}
         <div>
           {styleDashboard ? (
             <Link className="isActive" to="/dashboard">
@@ -84,6 +88,7 @@ export function Header() {
           ) : (
             <Link to="/dashboard">Dashboard</Link>
           )}
+
           {styleAdministrador ? (
             <Link className="isActive" to="/administrador">
               Administrador

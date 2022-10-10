@@ -14,6 +14,21 @@ export const Container = styled.header`
     padding: 20px 30px;
     justify-content: space-between;
 
+    h2 {
+      width: 100%;
+      background: red;
+      position: fixed;
+      color: var(--blue-400);
+      z-index: 1;
+      top: 0;
+      left: 0;
+      height: 60px;
+      background: var(--background);
+      text-align: center;
+      padding-top: 20px;
+      display: none;
+    }
+
     div {
       display: flex;
       align-items: center;
@@ -85,6 +100,11 @@ export const Container = styled.header`
       padding: 20px 10px;
       padding-bottom: 10px;
       background: none;
+
+      h2 {
+        display: block;
+      }
+
       div {
         flex-direction: column;
         align-items: center;

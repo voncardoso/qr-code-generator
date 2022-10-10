@@ -9,7 +9,13 @@ import {
   CaretDoubleRight,
   CaretDoubleLeft,
 } from "phosphor-react";
-import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../Config/config";
 import { useContext, useEffect, useState } from "react";
 import QRCodeLink from "qrcode";
@@ -18,12 +24,21 @@ import { UserContext } from "../../Context/useContext";
 // qr-code
 import Modal from "react-modal";
 import ModalQrCode from "react-modal";
+import ModalUpdate from "react-modal";
 
 export function Admistrador() {
   const [money, setMoney] = useState("");
   const [type, setType] = useState("");
+  const [isActive, setIsActive] = useState(false);
+
+  const [moneyUpdate, setMoneyUpdate] = useState("");
+  const [typeUpdate, setTypeUpdate] = useState("");
+  const [isActiveUpdate, setIsActiveUpdate] = useState(false);
+  const [itemId, setItemId] = useState("");
+
   const [isActiveModalQrCode, setIsActiveModalQrCode] = useState("");
   const [isActiveModal, setIsActiveModal] = useState(false);
+  const [isActiveModalUpdate, setIsActiveModalUpdate] = useState(false);
   const { data, setModify } = useContext(UserContext);
   const [numberQrCode, setNumberQrCode] = useState(0);
   const [img, setImg] = useState("");
@@ -35,6 +50,7 @@ export function Admistrador() {
   const [itensPerPage, setItensPerPage] = useState(10);
   // escolher qual pagina
   const [currentPage, setCurrentPerPage] = useState(0);
+  const [arry, setArry] = useState([]);
 
   let count1 = 0;
 
@@ -56,9 +72,16 @@ export function Admistrador() {
     setIsActiveModalQrCode(false);
   }
 
+  function handleOpenModalUpdate() {
+    setIsActiveModalUpdate(true);
+  }
+
+  function handleCloseModalUpdate() {
+    setIsActiveModalUpdate(false);
+  }
+
   async function handleSubmitBatch(event) {
     event.preventDefault();
-    console.log("lote");
     if (data.length === 0) {
       count1 = 1;
     }
@@ -72,7 +95,6 @@ export function Admistrador() {
       if (i > 1) {
         count1 = count1 + 1;
       }
-      console.log(count1);
       let countString = count1.toString();
 
       QRCodeLink.toDataURL(
@@ -95,11 +117,9 @@ export function Admistrador() {
           qrcode: imgQrCode,
         });
 
-        console.log("Document written with ID: ", docRef.id);
         setModify(true);
         setMoney("");
         setType("");
-        console.log("lote1");
       } catch (e) {
         console.error("Error adding document: ", e);
       }
@@ -121,7 +141,6 @@ export function Admistrador() {
     });
   }
 
-  console.log(data1.length);
   // verificar o numero de paginas
   const pages = Math.ceil(data1.length / itensPerPage);
   // fatia o array de itens
@@ -130,7 +149,6 @@ export function Admistrador() {
 
   // fatia o inicio ao final
   const currentItens = data1.slice(startIndex, endIndex);
-  console.log("cur", currentItens);
 
   // filtro de pesdquisa
   useEffect(() => {
@@ -168,6 +186,34 @@ export function Admistrador() {
     });
 
     return useed;
+  }
+
+  async function UpdateInformation(item) {
+    setArry(item);
+    setMoneyUpdate(item.money);
+    setTypeUpdate(item.type);
+    setIsActiveUpdate(item.active);
+    setItemId(item.id);
+  }
+
+  async function Update(event) {
+    event.preventDefault();
+    let ativo = false;
+
+    if (isActiveUpdate === "true") {
+      ativo = true;
+    } else {
+      ativo = false;
+    }
+    const washingtonRef = doc(db, "tickets", itemId);
+
+    await updateDoc(washingtonRef, {
+      active: ativo,
+      money: moneyUpdate,
+      type: typeUpdate,
+    });
+    setModify(true);
+    handleCloseModalUpdate();
   }
 
   return (
@@ -217,6 +263,7 @@ export function Admistrador() {
               <th className="primeryTD">Nº </th>
               <th>Valor</th>
               <th>Tipo</th>
+              <th>Status</th>
               <th className="acoes">Ações</th>
             </tr>
           </thead>
@@ -235,22 +282,37 @@ export function Admistrador() {
                       </td>
                       <td>{item.type}</td>
                       <td>
+                        {item.active ? (
+                          <p style={{ color: "var(--green-300)" }}>
+                            Confirmado
+                          </p>
+                        ) : (
+                          <p style={{ color: "#F5C61C" }}>Pendente</p>
+                        )}
+                      </td>
+                      <td>
                         <ul>
                           <li
                             onClick={() => {
-                              console.log("click", item.qrcode);
                               handleOpenModalQrCode(item.qrcode, item.count);
                             }}
                           >
                             <QrCode size={25} />
                           </li>
-                          <li>
+
+                          <li
+                            onClick={() => {
+                              handleOpenModalUpdate();
+                              UpdateInformation(item);
+                            }}
+                          >
                             <NotePencil
                               className="notePencil"
                               size={25}
-                              color={"var(--green-300)"}
+                              color={"var(--blue-400)"}
                             />
                           </li>
+
                           <li
                             onClick={() => {
                               deleteTicktes(item.id);
@@ -275,20 +337,33 @@ export function Admistrador() {
                       </td>
                       <td>{item.type}</td>
                       <td>
+                        {item.active ? (
+                          <p style={{ color: "var(--green-300)" }}>
+                            Confirmado
+                          </p>
+                        ) : (
+                          <p style={{ color: "#F5C61C" }}>Pendente</p>
+                        )}
+                      </td>
+                      <td>
                         <ul>
                           <li
                             onClick={() => {
-                              console.log("click", item.qrcode);
                               handleOpenModalQrCode(item.qrcode, item.count);
                             }}
                           >
                             <QrCode size={25} />
                           </li>
-                          <li>
+                          <li
+                            onClick={() => {
+                              handleOpenModalUpdate();
+                              UpdateInformation(item);
+                            }}
+                          >
                             <NotePencil
                               className="notePencil"
                               size={25}
-                              color={"var(--green-300)"}
+                              color={"var(--blue-400)"}
                             />
                           </li>
                           <li
@@ -369,27 +444,51 @@ export function Admistrador() {
           </div>
         )}
       </Container>
+
       <Mobali>
         {search.length > 0
           ? filteredRoad.map((item) => {
               return (
                 <ul>
-                  <li>Ingresso: {item.count}</li>
-                  <li>{item.money}</li>
-                  <li>{item.type}</li>
+                  <li>
+                    {" "}
+                    Nº: <p>{item.count}</p>
+                  </li>
+                  <li>
+                    Valor:{" "}
+                    <p>
+                      {Number(item.money).toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
+                  </li>
+                  <li>
+                    Tipo: <p>{item.type}</p>
+                  </li>
+                  <li className="ststusLi">
+                    {item.active ? (
+                      <p style={{ color: "var(--green-300)" }}>Confirmado</p>
+                    ) : (
+                      <p style={{ color: "#F5C61C" }}>Pendente</p>
+                    )}
+                  </li>
                   <li>
                     <QrCode
                       size={25}
                       onClick={() => {
-                        console.log("click", item.qrcode);
                         handleOpenModalQrCode(item.qrcode, item.count);
                       }}
                     />
 
                     <NotePencil
+                      onClick={() => {
+                        handleOpenModalUpdate();
+                        UpdateInformation(item);
+                      }}
                       className="notePencil"
                       size={25}
-                      color={"var(--green-300)"}
+                      color={"var(--blue-300)"}
                     />
 
                     <Trash
@@ -410,25 +509,41 @@ export function Admistrador() {
                     Nº: <p>{item.count}</p>
                   </li>
                   <li>
-                    Valor: <p>{item.money}</p>
+                    Valor:{" "}
+                    <p>
+                      {Number(item.money).toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
                   </li>
                   <li>
                     Tipo: <p>{item.type}</p>
+                  </li>
+                  <li className="ststusLi">
+                    {item.active ? (
+                      <p style={{ color: "var(--green-300)" }}>Confirmado</p>
+                    ) : (
+                      <p style={{ color: "#F5C61C" }}>Pendente</p>
+                    )}
                   </li>
                   <li>
                     <QrCode
                       size={25}
                       color={"#000"}
                       onClick={() => {
-                        console.log("click", item.qrcode);
                         handleOpenModalQrCode(item.qrcode, item.count);
                       }}
                     />
 
                     <NotePencil
+                      onClick={() => {
+                        handleOpenModalUpdate();
+                        UpdateInformation(item);
+                      }}
                       className="notePencil"
                       size={25}
-                      color={"var(--green-300)"}
+                      color={"var(--blue-300)"}
                     />
 
                     <Trash
@@ -442,6 +557,8 @@ export function Admistrador() {
                 </ul>
               );
             })}
+
+        {/**paginaçao */}
         {search > 0 ? (
           ""
         ) : (
@@ -506,6 +623,7 @@ export function Admistrador() {
           </div>
         )}
       </Mobali>
+
       <Modal
         isOpen={isActiveModal}
         onRequestClose={handleCloseModal}
@@ -563,6 +681,57 @@ export function Admistrador() {
           </a>
         </div>
       </ModalQrCode>
+
+      <ModalUpdate
+        isOpen={isActiveModalUpdate}
+        onRequestClose={handleCloseModalUpdate}
+        overlayClassName="react-modal-overlay"
+        className="react-modal-content"
+      >
+        <form onSubmit={Update}>
+          <h3>Atualizar ingresso</h3>
+          <label htmlFor="">Valor</label>
+          <input
+            required
+            type="text"
+            value={moneyUpdate}
+            onChange={(event) => setMoneyUpdate(event.target.value)}
+          />
+          <label className="nucleRegional" htmlFor="">
+            Tipo do ingresso
+            <select
+              name="uf"
+              id="uf"
+              required
+              value={typeUpdate}
+              onChange={(event) => setTypeUpdate(event.target.value)}
+            >
+              <option value="">Ingresso</option>
+              <option value="Pista">Pista</option>
+              <option value="Área Vip">Área Vip</option>
+              <option value="Camarote">Camarote</option>
+            </select>
+          </label>
+
+          <label className="nucleRegional" htmlFor="">
+            Status
+            <select
+              name="uf"
+              id="uf"
+              type="bolean"
+              value={isActiveUpdate}
+              onChange={(event) => setIsActiveUpdate(event.target.value)}
+            >
+              <option value="">Status</option>
+              <option value={true}>Confirmado</option>
+              <option value={false}>Pendente</option>
+            </select>
+          </label>
+          <button type="" className="buttonAdd">
+            Cadastrar
+          </button>
+        </form>
+      </ModalUpdate>
     </>
   );
 }

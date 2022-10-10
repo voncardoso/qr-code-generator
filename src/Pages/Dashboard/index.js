@@ -3,10 +3,6 @@ import { Container, Mobali } from "./style";
 import {
   CheckCircle,
   XCircle,
-  Checks,
-  NotePencil,
-  Trash,
-  QrCode,
   CaretDoubleRight,
   CaretDoubleLeft,
 } from "phosphor-react";
@@ -24,6 +20,7 @@ export function Dashboard() {
   const [itensPerPage, setItensPerPage] = useState(10);
   // escolher qual pagina
   const [currentPage, setCurrentPerPage] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   if (data) {
     data.map((rodovia) => {
@@ -31,7 +28,6 @@ export function Dashboard() {
     });
   }
 
-  console.log(data1.length);
   // verificar o numero de paginas
   const pages = Math.ceil(data1.length / itensPerPage);
   // fatia o array de itens
@@ -43,17 +39,15 @@ export function Dashboard() {
 
   async function verifyTickets(id) {
     const washingtonRef = doc(db, "tickets", id);
-    console.log("foi-------------------");
     try {
       await updateDoc(washingtonRef, {
         active: true,
       });
 
       setModify(true);
+      setLoading(false);
       //  window.location.reload();
-    } catch {
-      console.log("erro");
-    }
+    } catch {}
   }
 
   // filtro de pesdquisa
@@ -177,7 +171,7 @@ export function Dashboard() {
                     </tr>
                   );
                 })
-              : currentItens.map((item) => {
+              : currentItens.map((item, index) => {
                   return (
                     <tr>
                       <td>{item.count}</td>
@@ -203,6 +197,7 @@ export function Dashboard() {
                           <button
                             onClick={() => {
                               verifyTickets(item.id);
+                              setLoading(true);
                             }}
                           >
                             Confirmar
@@ -284,15 +279,27 @@ export function Dashboard() {
           ? filteredRoad.map((item) => {
               return (
                 <ul>
-                  <li>Ingresso: {item.count}</li>
-                  <li>{item.money}</li>
-                  <li>{item.type}</li>
+                  <li>
+                    Nº: <p>{item.count}</p>
+                  </li>
+                  <li>
+                    Valor:{" "}
+                    <p>
+                      {Number(item.money).toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
+                  </li>
+                  <li>
+                    Tipo: <p>{item.type}</p>
+                  </li>
                   <li>
                     {item.active ? (
                       <button
                         style={{
-                          background: "transparent",
-                          color: "#78BAAE",
+                          background: "#78BAAE",
+                          color: "#fff",
                           fontSize: "1rem",
                         }}
                       >
@@ -318,7 +325,13 @@ export function Dashboard() {
                     Nº: <p>{item.count}</p>
                   </li>
                   <li>
-                    Valor: <p>{item.money}</p>
+                    Valor:{" "}
+                    <p>
+                      {Number(item.money).toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </p>
                   </li>
                   <li>
                     Tipo: <p>{item.type}</p>
