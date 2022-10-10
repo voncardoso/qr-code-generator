@@ -10,12 +10,13 @@ export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [login, setLogin] = useState(null);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
-
+    setLogin(true);
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -23,9 +24,10 @@ export function Login() {
         const user = userCredential.user;
         if (user) {
           console.log("usuario existe");
-          setLogin(true);
+
           window.localStorage.setItem("login", true);
           navigate("/dashboard");
+          setLogin(false);
         }
         // ...
       })
@@ -33,12 +35,15 @@ export function Login() {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log("usuario não existe");
+        setError(true);
+        setLogin(false);
       });
   }
 
   return (
     <Container>
       <form onSubmit={handleSubmit}>
+        {error ? <div className="error">Email ou senha está inválido</div> : ""}
         <h1>Login</h1>
         <div>
           <label htmlFor="">Email</label>
@@ -57,7 +62,13 @@ export function Login() {
             onChange={(event) => setPassword(event.target.value)}
           />
         </div>
-        <button>Login</button>
+        {login ? (
+          <button disabled style={{ background: "#70B6F2" }}>
+            Entrando...
+          </button>
+        ) : (
+          <button>Login</button>
+        )}
       </form>
       <div className="containerImg">
         <img src={backgroungLogin} alt="" />

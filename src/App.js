@@ -10,6 +10,7 @@ import { GlobalStyle } from "./style/global";
 import { Admistrador } from "./Pages/Admintrador";
 import { getFirestore } from "firebase/firestore";
 import { QRcode1 } from "./Pages/QRcode1";
+import { User } from "./Pages/User/User";
 
 function App() {
   firebase.initializeApp(firebaseConfig);
@@ -35,6 +36,14 @@ function App() {
               element={
                 <ProtectedRouter>
                   <Admistrador />
+                </ProtectedRouter>
+              }
+            />
+            <Route
+              path="/user"
+              element={
+                <ProtectedRouter>
+                  <User />
                 </ProtectedRouter>
               }
             />

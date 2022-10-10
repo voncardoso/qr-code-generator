@@ -11,6 +11,7 @@ export function Header() {
   const { pathname } = useLocation();
   const [styleAdministrador, setStyleAdministrador] = useState(false);
   const [styleDashboard, setStyleDashboard] = useState(false);
+  const [styleUser, setStyleUser] = useState(false);
   const [isActiveMenuMobilemenuMobile, setIsActiveMenuMobile] =
     useState("none");
   const [isActiveButtonMobile, setIisActiveButtonMobile] = useState(false);
@@ -26,13 +27,14 @@ export function Header() {
         console.log("foi dashboar");
         setStyleDashboard(true);
       }
+      if (pathname === "/user") {
+        console.log("foi user");
+        setStyleUser(true);
+      }
     }
     routeStyle();
   }, [pathname]);
 
-  if (pathname === "/dashboard") {
-    console.log("teste");
-  }
   function Logout() {
     const auth = getAuth();
     let response = window.confirm("Certeza que deseja sair ?");
@@ -89,6 +91,7 @@ export function Header() {
           ) : (
             <Link to="/dashboard">Dashboard</Link>
           )}
+
           {styleAdministrador ? (
             <Link className="isActive" to="/administrador">
               Administrador
