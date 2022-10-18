@@ -134,7 +134,7 @@ export function Admistrador() {
           type: type,
           count: +count1,
           active: false,
-          qrcode: imgQrCode,
+          //  qrcode: imgQrCode,
         });
 
         setMoney("");
@@ -146,6 +146,25 @@ export function Admistrador() {
     setModify(true);
     setIsActive(false);
     handleCloseModal();
+  }
+
+  function geradorQRCODE(count) {
+    console.log("gerador", count);
+    let imgQrCode = "";
+    let countString = count.toString();
+
+    QRCodeLink.toDataURL(
+      countString,
+      {
+        width: 400,
+        margin: 3,
+      },
+      function (err, url) {
+        imgQrCode = url;
+      }
+    );
+
+    handleOpenModalQrCode(imgQrCode, count);
   }
 
   async function deleteTicktes(id) {
@@ -162,7 +181,7 @@ export function Admistrador() {
       data1.push(rodovia);
     });
   }
-  const arrayTeste = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
   // verificar o numero de paginas
   const pages = Math.ceil(data1.length / itensPerPage);
   // fatia o array de itens
@@ -173,7 +192,7 @@ export function Admistrador() {
   const currentItens = data1.slice(startIndex, endIndex);
 
   // filtro de pesdquisa
-  console.log(pages);
+
   useEffect(() => {
     if (data) {
       if (data.length > 0) {
@@ -361,10 +380,8 @@ export function Admistrador() {
                             <ul>
                               <li
                                 onClick={() => {
-                                  handleOpenModalQrCode(
-                                    item.qrcode,
-                                    item.count
-                                  );
+                                  console.log("click");
+                                  geradorQRCODE(item.count);
                                 }}
                               >
                                 <QrCode size={25} />
@@ -419,10 +436,8 @@ export function Admistrador() {
                             <ul>
                               <li
                                 onClick={() => {
-                                  handleOpenModalQrCode(
-                                    item.qrcode,
-                                    item.count
-                                  );
+                                  console.log("click");
+                                  geradorQRCODE(item.count);
                                 }}
                               >
                                 <QrCode size={25} />

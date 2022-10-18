@@ -26,6 +26,7 @@ export const UserStorage = ({ children }) => {
     setModify(false);
     setLoadingAnimaçao(false);
     getIngressos();
+    console.log("dados");
   }, [modify]);
 
   return (

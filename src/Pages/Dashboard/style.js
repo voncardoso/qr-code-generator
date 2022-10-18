@@ -36,9 +36,10 @@ export const Container = styled.section`
       }
     }
   }
-  span {
+  .inputHerader {
     display: flex;
     justify-content: space-between;
+
     input {
       padding: 5px;
       border-radius: 5px;
@@ -46,18 +47,39 @@ export const Container = styled.section`
       margin-bottom: 20px;
     }
 
-    a {
-      padding: 10px 15px;
-      background: var(--blue-400);
-      height: 100%;
-      border-radius: 5px;
-      color: white;
-      text-decoration: none;
-      cursor: pointer;
-    }
+    group {
+      display: flex;
+      height: 32px;
+      justify-content: space-between;
+      gap: 20px;
+      button {
+        padding: 8px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border-radius: 5px;
+        background-color: var(--blue-400);
+        border: none;
+        color: var(--white);
+      }
 
-    a:hover {
-      background: rgb(0, 61, 167, 40%);
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 15px;
+        background: var(--blue-400);
+        height: 100%;
+        border-radius: 5px;
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      a:hover {
+        background: rgb(0, 61, 167, 40%);
+      }
     }
   }
 
