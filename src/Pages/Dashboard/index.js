@@ -5,6 +5,7 @@ import {
   XCircle,
   CaretDoubleRight,
   CaretDoubleLeft,
+  Barcode,
 } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Context/useContext";
