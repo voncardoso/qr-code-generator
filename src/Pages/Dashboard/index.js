@@ -5,15 +5,19 @@ import {
   XCircle,
   CaretDoubleRight,
   CaretDoubleLeft,
+  Barcode,
+  Check,
 } from "phosphor-react";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Context/useContext";
 import { db } from "../../Config/config";
 import { doc, updateDoc } from "firebase/firestore";
 import { LoadingAnimacao } from "../../components/Loadign/loading";
+import { Pagination } from "@mui/material";
+import ModalUpdateConrfirmLote from "react-modal";
 
 export function Dashboard() {
-  const { data, setModify, loadingAnimaçao } = useContext(UserContext);
+  const { data, setModify, loadingAnimaçao, modify } = useContext(UserContext);
   const [search, setSearch] = useState("");
   const [filteredRoad, setFilteredRoad] = useState([]);
   let data1 = [];
@@ -22,6 +26,11 @@ export function Dashboard() {
   // escolher qual pagina
   const [currentPage, setCurrentPerPage] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [ticktisInit, setTicktisInit] = useState(0);
+  const [ticktisFinal, setTicktisFinal] = useState(0);
+  const [ticktisIsActive, setTicktisIsActive] = useState(false);
+  const [isActiveModalConfirmLote, setIsActiveModalConfirmLote] =
+    useState(false);
 
   if (data) {
     data.map((rodovia) => {
@@ -85,6 +94,49 @@ export function Dashboard() {
     return notUsed;
   }
 
+  async function ConfimLtote(event) {
+    event.preventDefault();
+    setLoading(true);
+    let inicicial = +ticktisInit - 1;
+    let final = +ticktisFinal;
+    const lote = data.slice(inicicial, final);
+    console.log(lote, inicicial, final);
+    let ativo = false;
+
+    lote.map((item) => {
+      if (ticktisIsActive === "true") {
+        ativo = true;
+      } else {
+        ativo = false;
+      }
+      const washingtonRef = doc(db, "tickets", item.id);
+
+      updateDoc(washingtonRef, {
+        active: ativo,
+      });
+
+      console.log("foi");
+    });
+
+    setModify(true);
+    setLoading(false);
+    console.log("teste foi----------");
+  }
+
+  const handleChangePage = (e, newPage) => {
+    setCurrentPerPage(newPage - 1);
+
+    console.log(e, newPage);
+  };
+
+  function handleOpenModalConfirmLote() {
+    setIsActiveModalConfirmLote(true);
+  }
+
+  function handleCloseModalConfirmLote() {
+    setIsActiveModalConfirmLote(false);
+  }
+
   return (
     <>
       {loadingAnimaçao ? (
@@ -125,8 +177,13 @@ export function Dashboard() {
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
               />
+              <group>
+                <button onClick={handleOpenModalConfirmLote}>
+                  <Check size={18} /> <p>Lote</p>
+                </button>
 
-              <a href="/qrcode">Qr-code</a>
+                <a href="/qrcode">Qr-code</a>
+              </group>
             </span>
 
             <table>
@@ -218,65 +275,14 @@ export function Dashboard() {
             {search > 0 ? (
               ""
             ) : (
-              <div className="paginacao">
-                <span>
-                  {currentPage == 0 ? (
-                    <button
-                      disabled
-                      className="Anterior"
-                      style={{
-                        background: "transparent",
-                        boxShadow: "none",
-                      }}
-                    >
-                      <CaretDoubleLeft color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage - 1);
-                      }}
-                    >
-                      <CaretDoubleLeft size={18} />
-                    </button>
-                  )}
-
-                  {Array.from(Array(pages), (item, index) => {
-                    return (
-                      <button
-                        style={
-                          index == currentPage
-                            ? {
-                                background: "var(--blue-400)",
-                                color: "var(--white)",
-                              }
-                            : null
-                        }
-                        className="paginationButton"
-                        value={index}
-                        onClick={(e) => setCurrentPerPage(e.target.value)}
-                      >
-                        {index + 1}
-                      </button>
-                    );
-                  })}
-                  {currentPage == pages - 1 ? (
-                    <button disabled className="Anterior">
-                      <CaretDoubleRight color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage + 1);
-                      }}
-                    >
-                      <CaretDoubleRight size={18} />
-                    </button>
-                  )}
-                </span>
-              </div>
+              <Pagination
+                className="paginacao"
+                count={pages}
+                color="primary"
+                showFirstButton
+                showLastButton
+                onChange={handleChangePage}
+              />
             )}
           </Container>
           <Mobali>
@@ -368,69 +374,106 @@ export function Dashboard() {
             {search > 0 ? (
               ""
             ) : (
-              <div className="paginacaoMobile">
-                <span>
-                  {currentPage == 0 ? (
-                    <button
-                      disabled
-                      className="Anterior"
-                      style={{
-                        background: "transparent",
-                        boxShadow: "none",
-                      }}
-                    >
-                      <CaretDoubleLeft color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage - 1);
-                      }}
-                    >
-                      <CaretDoubleLeft size={18} />
-                    </button>
-                  )}
-
-                  {Array.from(Array(pages), (item, index) => {
-                    return (
-                      <button
-                        style={
-                          index == currentPage
-                            ? {
-                                background: "var(--blue-400)",
-                                color: "var(--white)",
-                              }
-                            : null
-                        }
-                        className="paginationButton"
-                        value={index}
-                        onClick={(e) => setCurrentPerPage(e.target.value)}
-                      >
-                        {index + 1}
-                      </button>
-                    );
-                  })}
-                  {currentPage == pages - 1 ? (
-                    <button disabled className="Anterior">
-                      <CaretDoubleRight color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage + 1);
-                      }}
-                    >
-                      <CaretDoubleRight size={18} />
-                    </button>
-                  )}
-                </span>
-              </div>
+              <Pagination
+                className="paginacaoMobile"
+                count={pages}
+                color="primary"
+                hidePrevButton
+                hideNextButton
+                onChange={handleChangePage}
+              />
             )}
           </Mobali>
         </>
       )}
+      <ModalUpdateConrfirmLote
+        isOpen={isActiveModalConfirmLote}
+        onRequestClose={handleCloseModalConfirmLote}
+        overlayClassName="react-modal-overlay"
+        className="react-modal-content"
+      >
+        <form onSubmit={ConfimLtote}>
+          <h3>Confirma ingresso em lote</h3>
+          <label htmlFor=""> Nº Ingresso Inicial</label>
+          <input
+            required
+            type="number"
+            value={ticktisInit}
+            onChange={(event) => setTicktisInit(event.target.value)}
+          />
+
+          <label htmlFor=""> Nº Ingresso final</label>
+          <input
+            required
+            type="number"
+            value={ticktisFinal}
+            onChange={(event) => setTicktisFinal(event.target.value)}
+          />
+
+          <label className="nucleRegional" htmlFor="">
+            Status
+            <select
+              name="uf"
+              id="uf"
+              type="bolean"
+              value={ticktisIsActive}
+              onChange={(event) => setTicktisIsActive(event.target.value)}
+            >
+              <option value="">Status</option>
+              <option value={true}>Confirmado</option>
+              <option value={false}>Pendente</option>
+            </select>
+          </label>
+
+          <button type="" className="buttonAdd">
+            Confirmar
+          </button>
+        </form>
+      </ModalUpdateConrfirmLote>
+      <ModalUpdateConrfirmLote
+        isOpen={isActiveModalConfirmLote}
+        onRequestClose={handleCloseModalConfirmLote}
+        overlayClassName="react-modal-overlay"
+        className="react-modal-content"
+      >
+        <form onSubmit={ConfimLtote}>
+          <h3>Confirma ingresso em lote</h3>
+          <label htmlFor=""> Nº Ingresso Inicial</label>
+          <input
+            required
+            type="number"
+            value={ticktisInit}
+            onChange={(event) => setTicktisInit(event.target.value)}
+          />
+
+          <label htmlFor=""> Nº Ingresso final</label>
+          <input
+            required
+            type="number"
+            value={ticktisFinal}
+            onChange={(event) => setTicktisFinal(event.target.value)}
+          />
+
+          <label className="nucleRegional" htmlFor="">
+            Status
+            <select
+              name="uf"
+              id="uf"
+              type="bolean"
+              value={ticktisIsActive}
+              onChange={(event) => setTicktisIsActive(event.target.value)}
+            >
+              <option value="">Status</option>
+              <option value={true}>Confirmado</option>
+              <option value={false}>Pendente</option>
+            </select>
+          </label>
+
+          <button type="" className="buttonAdd">
+            Confirmar
+          </button>
+        </form>
+      </ModalUpdateConrfirmLote>
     </>
   );
 }

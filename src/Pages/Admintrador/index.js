@@ -8,6 +8,8 @@ import {
   QrCode,
   CaretDoubleRight,
   CaretDoubleLeft,
+  Plus,
+  Check,
 } from "phosphor-react";
 import {
   collection,
@@ -20,11 +22,14 @@ import { db } from "../../Config/config";
 import { useContext, useEffect, useState } from "react";
 import QRCodeLink from "qrcode";
 import { UserContext } from "../../Context/useContext";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 // qr-code
 import Modal from "react-modal";
 import ModalQrCode from "react-modal";
 import ModalUpdate from "react-modal";
+import ModalUpdateConrfirmLote from "react-modal";
 import { LoadingAnimacao } from "../../components/Loadign/loading";
 
 export function Admistrador() {
@@ -36,9 +41,14 @@ export function Admistrador() {
   const [typeUpdate, setTypeUpdate] = useState("");
   const [isActiveUpdate, setIsActiveUpdate] = useState(false);
   const [itemId, setItemId] = useState("");
+  const [ticktisInit, setTicktisInit] = useState(0);
+  const [ticktisFinal, setTicktisFinal] = useState(0);
+  const [ticktisIsActive, setTicktisIsActive] = useState(false);
 
   const [isActiveModalQrCode, setIsActiveModalQrCode] = useState("");
   const [isActiveModal, setIsActiveModal] = useState(false);
+  const [isActiveModalConfirmLote, setIsActiveModalConfirmLote] =
+    useState(false);
   const [isActiveModalUpdate, setIsActiveModalUpdate] = useState(false);
   const { data, setModify, loadingAnimaçao } = useContext(UserContext);
   const [numberQrCode, setNumberQrCode] = useState(0);
@@ -63,6 +73,14 @@ export function Admistrador() {
     setIsActiveModal(false);
   }
 
+  function handleOpenModalConfirmLote() {
+    setIsActiveModalConfirmLote(true);
+  }
+
+  function handleCloseModalConfirmLote() {
+    setIsActiveModalConfirmLote(false);
+  }
+
   function handleOpenModalQrCode(img1, numberQrcode) {
     setIsActiveModalQrCode(true);
     setImg(img1);
@@ -83,6 +101,7 @@ export function Admistrador() {
 
   async function handleSubmitBatch(event) {
     event.preventDefault();
+    setIsActive(true);
     if (data.length === 0) {
       count1 = 1;
     }
@@ -115,16 +134,37 @@ export function Admistrador() {
           type: type,
           count: +count1,
           active: false,
-          qrcode: imgQrCode,
+          //  qrcode: imgQrCode,
         });
 
-        setModify(true);
         setMoney("");
         setType("");
       } catch (e) {
         console.error("Error adding document: ", e);
       }
     }
+    setModify(true);
+    setIsActive(false);
+    handleCloseModal();
+  }
+
+  function geradorQRCODE(count) {
+    console.log("gerador", count);
+    let imgQrCode = "";
+    let countString = count.toString();
+
+    QRCodeLink.toDataURL(
+      countString,
+      {
+        width: 400,
+        margin: 3,
+      },
+      function (err, url) {
+        imgQrCode = url;
+      }
+    );
+
+    handleOpenModalQrCode(imgQrCode, count);
   }
 
   async function deleteTicktes(id) {
@@ -152,6 +192,7 @@ export function Admistrador() {
   const currentItens = data1.slice(startIndex, endIndex);
 
   // filtro de pesdquisa
+
   useEffect(() => {
     if (data) {
       if (data.length > 0) {
@@ -217,6 +258,38 @@ export function Admistrador() {
     handleCloseModalUpdate();
   }
 
+  async function ConfimLtote(event) {
+    event.preventDefault();
+    let inicicial = +ticktisInit - 1;
+    let final = +ticktisFinal;
+    const lote = data.slice(inicicial, final);
+    console.log(lote, inicicial, final);
+    let ativo = false;
+
+    lote.map((item) => {
+      if (ticktisIsActive === "true") {
+        ativo = true;
+      } else {
+        ativo = false;
+      }
+      const washingtonRef = doc(db, "tickets", item.id);
+
+      updateDoc(washingtonRef, {
+        active: ativo,
+      });
+
+      console.log("foi");
+    });
+
+    setModify(true);
+  }
+
+  const handleChangePage = (e, newPage) => {
+    setCurrentPerPage(newPage - 1);
+
+    console.log(e, newPage);
+  };
+
   return (
     <>
       {loadingAnimaçao ? (
@@ -257,10 +330,18 @@ export function Admistrador() {
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
               />
+              <group>
+                <button className="buttonAdd" onClick={handleOpenModal}>
+                  Adicionar
+                </button>
 
-              <button className="buttonAdd" onClick={handleOpenModal}>
-                Adicionar
-              </button>
+                <button
+                  className="buttonAdd"
+                  onClick={handleOpenModalConfirmLote}
+                >
+                  <Check size={18} /> <p>Lote</p>
+                </button>
+              </group>
             </span>
             <table>
               <thead>
@@ -299,10 +380,8 @@ export function Admistrador() {
                             <ul>
                               <li
                                 onClick={() => {
-                                  handleOpenModalQrCode(
-                                    item.qrcode,
-                                    item.count
-                                  );
+                                  console.log("click");
+                                  geradorQRCODE(item.count);
                                 }}
                               >
                                 <QrCode size={25} />
@@ -357,10 +436,8 @@ export function Admistrador() {
                             <ul>
                               <li
                                 onClick={() => {
-                                  handleOpenModalQrCode(
-                                    item.qrcode,
-                                    item.count
-                                  );
+                                  console.log("click");
+                                  geradorQRCODE(item.count);
                                 }}
                               >
                                 <QrCode size={25} />
@@ -394,65 +471,14 @@ export function Admistrador() {
             {search > 0 ? (
               ""
             ) : (
-              <div className="paginacao">
-                <span>
-                  {currentPage == 0 ? (
-                    <button
-                      disabled
-                      className="Anterior"
-                      style={{
-                        background: "transparent",
-                        boxShadow: "none",
-                      }}
-                    >
-                      <CaretDoubleLeft color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage - 1);
-                      }}
-                    >
-                      <CaretDoubleLeft size={18} />
-                    </button>
-                  )}
-
-                  {Array.from(Array(pages), (item, index) => {
-                    return (
-                      <button
-                        style={
-                          index == currentPage
-                            ? {
-                                background: "var(--blue-400)",
-                                color: "var(--white)",
-                              }
-                            : null
-                        }
-                        className="paginationButton"
-                        value={index}
-                        onClick={(e) => setCurrentPerPage(e.target.value)}
-                      >
-                        {index + 1}
-                      </button>
-                    );
-                  })}
-                  {currentPage == pages - 1 ? (
-                    <button disabled className="Anterior">
-                      <CaretDoubleRight color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage + 1);
-                      }}
-                    >
-                      <CaretDoubleRight size={18} />
-                    </button>
-                  )}
-                </span>
-              </div>
+              <Pagination
+                className="paginacao"
+                count={pages}
+                color="primary"
+                showFirstButton
+                showLastButton
+                onChange={handleChangePage}
+              />
             )}
           </Container>
 
@@ -577,65 +603,14 @@ export function Admistrador() {
             {search > 0 ? (
               ""
             ) : (
-              <div className="paginacaoMobile">
-                <span>
-                  {currentPage == 0 ? (
-                    <button
-                      disabled
-                      className="Anterior"
-                      style={{
-                        background: "transparent",
-                        boxShadow: "none",
-                      }}
-                    >
-                      <CaretDoubleLeft color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage - 1);
-                      }}
-                    >
-                      <CaretDoubleLeft size={18} />
-                    </button>
-                  )}
-
-                  {Array.from(Array(pages), (item, index) => {
-                    return (
-                      <button
-                        style={
-                          index == currentPage
-                            ? {
-                                background: "var(--blue-400)",
-                                color: "var(--white)",
-                              }
-                            : null
-                        }
-                        className="paginationButton"
-                        value={index}
-                        onClick={(e) => setCurrentPerPage(e.target.value)}
-                      >
-                        {index + 1}
-                      </button>
-                    );
-                  })}
-                  {currentPage == pages - 1 ? (
-                    <button disabled className="Anterior">
-                      <CaretDoubleRight color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage + 1);
-                      }}
-                    >
-                      <CaretDoubleRight size={18} />
-                    </button>
-                  )}
-                </span>
-              </div>
+              <Pagination
+                className="paginacaoMobile"
+                count={pages}
+                color="primary"
+                hidePrevButton
+                hideNextButton
+                onChange={handleChangePage}
+              />
             )}
           </Mobali>
 
@@ -677,9 +652,24 @@ export function Admistrador() {
                 value={amountBatch}
                 onChange={(event) => setAmountBatch(event.target.value)}
               />
-              <button type="" className="buttonAdd" onClick={handleSubmitBatch}>
-                Cadastrar
-              </button>
+              {isActive ? (
+                <button
+                  disabled
+                  type=""
+                  className="buttonAdd"
+                  onClick={handleSubmitBatch}
+                >
+                  Cadastrando...
+                </button>
+              ) : (
+                <button
+                  type=""
+                  className="buttonAdd"
+                  onClick={handleSubmitBatch}
+                >
+                  Cadastrar
+                </button>
+              )}
             </form>
           </Modal>
 
@@ -743,10 +733,55 @@ export function Admistrador() {
                 </select>
               </label>
               <button type="" className="buttonAdd">
-                Cadastrar
+                Atualizar
               </button>
             </form>
           </ModalUpdate>
+
+          <ModalUpdateConrfirmLote
+            isOpen={isActiveModalConfirmLote}
+            onRequestClose={handleCloseModalConfirmLote}
+            overlayClassName="react-modal-overlay"
+            className="react-modal-content"
+          >
+            <form onSubmit={ConfimLtote}>
+              <h3>Confirma ingresso em lote</h3>
+              <label htmlFor=""> Nº Ingresso Inicial</label>
+              <input
+                required
+                type="number"
+                value={ticktisInit}
+                onChange={(event) => setTicktisInit(event.target.value)}
+              />
+
+              <label htmlFor=""> Nº Ingresso final</label>
+              <input
+                required
+                type="number"
+                value={ticktisFinal}
+                onChange={(event) => setTicktisFinal(event.target.value)}
+              />
+
+              <label className="nucleRegional" htmlFor="">
+                Status
+                <select
+                  name="uf"
+                  id="uf"
+                  type="bolean"
+                  value={ticktisIsActive}
+                  onChange={(event) => setTicktisIsActive(event.target.value)}
+                >
+                  <option value="">Status</option>
+                  <option value={true}>Confirmado</option>
+                  <option value={false}>Pendente</option>
+                </select>
+              </label>
+
+              <button type="" className="buttonAdd">
+                Confirmar
+              </button>
+            </form>
+          </ModalUpdateConrfirmLote>
         </>
       )}
     </>

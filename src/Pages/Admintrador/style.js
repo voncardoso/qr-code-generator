@@ -41,7 +41,20 @@ export const Container = styled.section`
   .inputHerader {
     width: 100%;
     display: flex;
+    gap: 2px;
     justify-content: space-between;
+    margin-bottom: 10px;
+    group {
+      display: flex;
+      gap: 10px;
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        align-self: center;
+      }
+    }
     input {
       padding: 5px;
       border-radius: 5px;
@@ -139,55 +152,9 @@ export const Container = styled.section`
     }
   }
   .paginacao {
-    background: transparent;
-    width: 100%;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    span {
-      margin: 0 auto;
-      display: flex;
-      gap: 10px;
-
-      button {
-        display: flex;
-        align-items: center;
-        align-self: center;
-        width: 100%;
-        height: 100%;
-        background: #fff;
-        border: none;
-        border-radius: 50%;
-        position: relative;
-        margin: 0 auto;
-        padding: 4px 8px;
-        box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 25%);
-        color: var(--blue-400);
-      }
-      button:hover {
-        background: var(--blue-400);
-        color: #fff;
-      }
-
-      button:last-child {
-        background: transparent;
-      }
-
-      .Anterior {
-        padding: 0px;
-        align-self: center;
-        cursor: pointer;
-        font-size: 0.875rem;
-        background: transparent;
-        box-shadow: none;
-      }
-      .Anterior:hover {
-        background: transparent;
-        background: transparent;
-        color: var(--blue-400);
-      }
-    }
+    width: 400px;
+    padding: 10px;
+    margin: 0 auto;
   }
 
   div {
@@ -272,12 +239,16 @@ export const Container = styled.section`
 
   @media (max-width: 728px) {
     padding: 0px 20px;
+
     table {
       width: 80vw;
     }
   }
 
   @media (max-width: 600px) {
+    .paginacao {
+      display: none;
+    }
     table {
       display: none;
     }
@@ -382,53 +353,13 @@ export const Mobali = styled.section`
   }
 
   .paginacaoMobile {
-    background: transparent;
-    width: 100%;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    span {
-      margin: 0 auto;
+    ul {
       display: flex;
-      gap: 10px;
-
-      button {
-        display: flex;
-        align-items: center;
-        align-self: center;
-        width: 100%;
-        height: 100%;
-        background: #fff;
-        border: none;
-        border-radius: 50%;
-        position: relative;
-        margin: 0 auto;
-        padding: 4px 8px;
-        box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 25%);
-        color: var(--blue-400);
-      }
-      button:hover {
-        background: var(--blue-400);
-        color: #fff;
-      }
-
-      button:last-child {
-        background: transparent;
-      }
-
-      .Anterior {
-        padding: 0px;
-        align-self: center;
-        cursor: pointer;
-        font-size: 0.875rem;
-        background: transparent;
-        box-shadow: none;
-      }
-      .Anterior:hover {
-        background: transparent;
-        background: transparent;
-        color: var(--blue-400);
+      background: none;
+      padding: 0px;
+      gap: 0px;
+      li:last-child {
+        margin: 0px;
       }
     }
   }
