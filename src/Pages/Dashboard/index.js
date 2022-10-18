@@ -12,6 +12,7 @@ import { UserContext } from "../../Context/useContext";
 import { db } from "../../Config/config";
 import { doc, updateDoc } from "firebase/firestore";
 import { LoadingAnimacao } from "../../components/Loadign/loading";
+import { Pagination } from "@mui/material";
 
 export function Dashboard() {
   const { data, setModify, loadingAnimaçao } = useContext(UserContext);
@@ -85,6 +86,12 @@ export function Dashboard() {
 
     return notUsed;
   }
+
+  const handleChangePage = (e, newPage) => {
+    setCurrentPerPage(newPage - 1);
+
+    console.log(e, newPage);
+  };
 
   return (
     <>
@@ -219,65 +226,14 @@ export function Dashboard() {
             {search > 0 ? (
               ""
             ) : (
-              <div className="paginacao">
-                <span>
-                  {currentPage == 0 ? (
-                    <button
-                      disabled
-                      className="Anterior"
-                      style={{
-                        background: "transparent",
-                        boxShadow: "none",
-                      }}
-                    >
-                      <CaretDoubleLeft color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage - 1);
-                      }}
-                    >
-                      <CaretDoubleLeft size={18} />
-                    </button>
-                  )}
-
-                  {Array.from(Array(pages), (item, index) => {
-                    return (
-                      <button
-                        style={
-                          index == currentPage
-                            ? {
-                                background: "var(--blue-400)",
-                                color: "var(--white)",
-                              }
-                            : null
-                        }
-                        className="paginationButton"
-                        value={index}
-                        onClick={(e) => setCurrentPerPage(e.target.value)}
-                      >
-                        {index + 1}
-                      </button>
-                    );
-                  })}
-                  {currentPage == pages - 1 ? (
-                    <button disabled className="Anterior">
-                      <CaretDoubleRight color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage + 1);
-                      }}
-                    >
-                      <CaretDoubleRight size={18} />
-                    </button>
-                  )}
-                </span>
-              </div>
+              <Pagination
+                className="paginacao"
+                count={pages}
+                color="primary"
+                showFirstButton
+                showLastButton
+                onChange={handleChangePage}
+              />
             )}
           </Container>
           <Mobali>
@@ -369,65 +325,14 @@ export function Dashboard() {
             {search > 0 ? (
               ""
             ) : (
-              <div className="paginacaoMobile">
-                <span>
-                  {currentPage == 0 ? (
-                    <button
-                      disabled
-                      className="Anterior"
-                      style={{
-                        background: "transparent",
-                        boxShadow: "none",
-                      }}
-                    >
-                      <CaretDoubleLeft color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage - 1);
-                      }}
-                    >
-                      <CaretDoubleLeft size={18} />
-                    </button>
-                  )}
-
-                  {Array.from(Array(pages), (item, index) => {
-                    return (
-                      <button
-                        style={
-                          index == currentPage
-                            ? {
-                                background: "var(--blue-400)",
-                                color: "var(--white)",
-                              }
-                            : null
-                        }
-                        className="paginationButton"
-                        value={index}
-                        onClick={(e) => setCurrentPerPage(e.target.value)}
-                      >
-                        {index + 1}
-                      </button>
-                    );
-                  })}
-                  {currentPage == pages - 1 ? (
-                    <button disabled className="Anterior">
-                      <CaretDoubleRight color=" #9baebf" size={18} />
-                    </button>
-                  ) : (
-                    <button
-                      className="Anterior"
-                      onClick={() => {
-                        setCurrentPerPage(currentPage + 1);
-                      }}
-                    >
-                      <CaretDoubleRight size={18} />
-                    </button>
-                  )}
-                </span>
-              </div>
+              <Pagination
+                className="paginacaoMobile"
+                count={pages}
+                color="primary"
+                hidePrevButton
+                hideNextButton
+                onChange={handleChangePage}
+              />
             )}
           </Mobali>
         </>
